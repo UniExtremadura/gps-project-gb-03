@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.bottomnavigation.BottomNavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomNavigationView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="#1E1E1E"
+    app:itemActiveIndicatorStyle="@style/ActiveIndicatorStyle.MusicGo"
+    app:itemIconSize="@dimen/bottom_navbar_item_size"
+    app:itemIconTint="#9DB2CE"
+    app:menu="@menu/main_menu" />

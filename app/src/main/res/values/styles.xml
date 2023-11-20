@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ActiveIndicatorStyle.MusicGo" parent="">
+        <item name="android:width">
+            @dimen/bottom_navbar_item_bg_width
+        </item>
+        <item name="android:height">
+            @dimen/bottom_navbar_item_bg_height
+        </item>
+        <item name="android:color">@color/blue</item>
+        <item name="shapeAppearance">
+            @style/ShapeAppearanceOverlay.MusicGo.BottomNavigationView
+        </item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MusicGo.BottomNavigationView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">
+            @dimen/bottom_navbar_item_corners
+        </item>
+    </style>
+
+    <style name="PopupMenuStyleMusicGo" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:textColor">@color/blue</item> <!-- Cambia el color del texto -->
+        <item name="android:background">@android:color/transparent</item> <!-- Cambia el color de fondo -->
+    </style>
+</resources>
