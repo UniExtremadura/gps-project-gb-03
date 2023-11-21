@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">MusicGo</string>
+    <string name="login_username_title">Username</string>
+    <string name="login_password_title">Password</string>
+    <string name="login_btn">Login</string>
+    <string name="logo_description" translatable="false">MusicGo logo</string>
+    <string name="login_or_tv">or</string>
+    <string name="Surname">Surname</string>
+    <string name="Email">Email</string>
+    <string name="CreateAccountSignUp">Create account</string>
+    <string name="login_create_account_btn">Create account</string>
 </resources>

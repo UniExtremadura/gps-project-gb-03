@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MusicGo</string>
+    <string name="login_username_title">Nombre de usuario</string>
+    <string name="login_password_title">Contraseña</string>
+    <string name="login_btn">Iniciar sesión</string>
+    <string name="login_create_account_btn">Crear cuenta</string>
+    <string name="login_or_tv">o</string>
+    <string name="Surname">Apellidos</string>
+    <string name="Email">Correo electrónico</string>
+    <string name="CreateAccountSignUp">Crear cuenta</string>
 </resources>
