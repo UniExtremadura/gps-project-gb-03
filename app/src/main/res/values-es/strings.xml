@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MusicGo</string>
+    <string name="recent_songs">Canciones recientes</string>
+    <string name="cover_image">Imagen de la cancion</string>
+    <string name="delete">Borrar</string>
+    <string name="options">Opciones</string>
 </resources>
