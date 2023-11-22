@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">MusicGo</string>
+    <string name="recent_songs">Recent songs</string>
+    <string name="cover_image">Image of the song</string>
+    <string name="delete">Delete</string>
+    <string name="options">Options</string>
     <string name="login_username_title">Username</string>
     <string name="login_password_title">Password</string>
     <string name="login_btn">Login</string>
