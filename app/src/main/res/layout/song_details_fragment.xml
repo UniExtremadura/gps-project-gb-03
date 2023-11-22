@@ -20,11 +20,11 @@
             android:layout_marginTop="64dp"
             android:backgroundTint="@android:color/transparent"
             android:backgroundTintMode="src_over"
+            android:contentDescription="@string/cover_image"
             android:src="@drawable/ic_song_disk"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/cover_image"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Buttons -->
         <LinearLayout
@@ -37,24 +37,27 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/song_icon">
 
-            <!-- Go to previous button -->
+            <!-- Play button -->
             <ImageButton
-                android:id="@+id/previous_button"
+                android:id="@+id/play_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@null"
-                android:contentDescription="@string/previous_song_description"
+                android:contentDescription="@string/play_description"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_previous_song"
-                android:visibility="gone" />
-
-            <!-- Separator -->
-            <Space
-                android:layout_width="32dp"
-                android:layout_height="match_parent" />
-
+                android:src="@drawable/ic_play_song" />
 
         </LinearLayout>
+
+        <!-- Progress bar-->
+        <SeekBar
+            android:id="@+id/song_progress"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttons_song" />
 
         <!-- Song info -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,8 +106,8 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@drawable/ic_profile"
-                    android:contentDescription="@string/name"/>
+                    android:contentDescription="@string/name"
+                    android:src="@drawable/ic_profile" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -157,8 +160,8 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@drawable/ic_music_note"
-                    android:contentDescription="@string/musical_note_description"/>
+                    android:contentDescription="@string/musical_note_description"
+                    android:src="@drawable/ic_music_note" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
