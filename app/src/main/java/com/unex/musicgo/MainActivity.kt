@@ -8,4 +8,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
+    companion object {
+        const val TAG = "MainActivity"
+
+        fun getIntent(context: AppCompatActivity) =
+            android.content.Intent(context, MainActivity::class.java)
+    }
 }

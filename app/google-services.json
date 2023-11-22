@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "724574808785",
+    "project_id": "musicgo-70b6a",
+    "storage_bucket": "musicgo-70b6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724574808785:android:d1d957584857492d5433f0",
+        "android_client_info": {
+          "package_name": "com.unex.musicgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHYuLVFLVi57Slqs3nEyBL_yG8P9UJnUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
