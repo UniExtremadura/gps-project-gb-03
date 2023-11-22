@@ -14,6 +14,7 @@ import com.unex.musicgo.databinding.GeneralActivityBinding
 import com.unex.musicgo.models.Song
 import com.unex.musicgo.ui.fragments.HomeFragment
 import com.unex.musicgo.ui.fragments.SearchFragment
+import com.unex.musicgo.ui.fragments.SettingsFragment
 import com.unex.musicgo.ui.fragments.SongListFragment
 import com.unex.musicgo.ui.interfaces.OnSearchListener
 import kotlinx.coroutines.launch
@@ -33,7 +34,7 @@ class HomeActivity : AppCompatActivity(), SongListFragment.OnSongClickListener, 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        
+
         binding = GeneralActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -62,6 +63,14 @@ class HomeActivity : AppCompatActivity(), SongListFragment.OnSongClickListener, 
 
                     else -> false
                 }
+            }
+
+            customToolbar.homeIcon.setOnClickListener {
+                launchHomeFragment()
+            }
+
+            customToolbar.settingsIcon.setOnClickListener {
+                launchSettingsFragment()
             }
         }
 
@@ -108,6 +117,11 @@ class HomeActivity : AppCompatActivity(), SongListFragment.OnSongClickListener, 
     private fun launchHomeFragment(addToBackStack: Boolean = true) {
         val fragment = HomeFragment.newInstance()
         replaceFragment(fragment, addToBackStack)
+    }
+
+    private fun launchSettingsFragment() {
+        val fragment = SettingsFragment.newInstance()
+        replaceFragment(fragment)
     }
 
     override fun onSearch(query: String) {

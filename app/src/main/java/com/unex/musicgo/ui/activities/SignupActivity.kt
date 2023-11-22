@@ -6,11 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.unex.musicgo.MainActivity
+import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.SignupBinding
+import com.unex.musicgo.models.User
+import kotlinx.coroutines.launch
 
 class SignupActivity : AppCompatActivity() {
 
@@ -28,11 +31,16 @@ class SignupActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
+    private var db: MusicGoDatabase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = SignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        lifecycleScope.launch {
+            db = MusicGoDatabase.getInstance(this@SignupActivity)
+        }
 
         auth = FirebaseAuth.getInstance()
 
@@ -58,7 +66,7 @@ class SignupActivity : AppCompatActivity() {
             TAG,
             "Email: $email, Password: $password, Username: $username, UserSurname: $userSurname"
         )
-        val db = Firebase.firestore
+        val firestore = Firebase.firestore
         val user = hashMapOf(
             "username" to username,
             "userSurname" to userSurname,
@@ -71,7 +79,7 @@ class SignupActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     // Add user to database
-                    db.collection("users")
+                    firestore.collection("users")
                         .add(user)
                         .addOnSuccessListener { documentReference ->
                             Log.d(
@@ -82,41 +90,22 @@ class SignupActivity : AppCompatActivity() {
                         .addOnFailureListener { e ->
                             Log.w(TAG, "Error adding document", e)
                         }
+                    // Save the user in the local database
+                    lifecycleScope.launch {
+                        val userData = User(
+                            email = email,
+                            userSurname = userSurname,
+                            username = username,
+                        )
+                        db?.userDao()?.deleteAll()
+                        db?.userDao()?.insertUser(userData)
+                    }
                     // Launch main activity
-                    val intent = MainActivity.getIntent(this)
+                    val intent = HomeActivity.getIntent(this)
                     startActivity(intent)
                     // Finish this activity
                     finish()
                 } else {
-                    // Check if the exception is because the user already exists
-                    if (task.exception.toString().contains("FirebaseAuthUserCollisionException")) {
-                        Toast.makeText(
-                            baseContext,
-                            "User already exists.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                        return@addOnCompleteListener
-                    }
-                    // Check if the exception is because the email is not valid
-                    if (task.exception.toString()
-                            .contains("FirebaseAuthInvalidCredentialsException")
-                    ) {
-                        Toast.makeText(
-                            baseContext,
-                            "Invalid email.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                        return@addOnCompleteListener
-                    }
-                    // Check if the password is too weak
-                    if (task.exception.toString().contains("FirebaseAuthWeakPasswordException")) {
-                        Toast.makeText(
-                            baseContext,
-                            "Password too weak. Must be at least 6 characters.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                        return@addOnCompleteListener
-                    }
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
