@@ -13,4 +13,10 @@
     <string name="Email">Email</string>
     <string name="CreateAccountSignUp">Create account</string>
     <string name="login_create_account_btn">Create account</string>
+    <string name="previous_song_description">Previous song</string>
+    <string name="information_song">Information</string>
+    <string name="name">Name</string>
+    <string name="Artista">Artist</string>
+    <string name="musical_note_description">Musical_note</string>
+    <string name="genre_msg">Genre</string>
 </resources>

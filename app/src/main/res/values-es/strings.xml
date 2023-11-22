@@ -13,4 +13,10 @@
     <string name="Surname">Apellidos</string>
     <string name="Email">Correo electrónico</string>
     <string name="CreateAccountSignUp">Crear cuenta</string>
+    <string name="previous_song_description">Canción anterior</string>
+    <string name="information_song">Información</string>
+    <string name="name">Nombre</string>
+    <string name="Artista">Artista</string>
+    <string name="musical_note_description">Nota musical</string>
+    <string name="genre_msg">Género</string>
 </resources>
