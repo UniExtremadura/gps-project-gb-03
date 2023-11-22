@@ -9,7 +9,6 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.unex.musicgo.MainActivity
 import com.unex.musicgo.databinding.SignupBinding
 
 class SignupActivity : AppCompatActivity() {
@@ -83,7 +82,7 @@ class SignupActivity : AppCompatActivity() {
                             Log.w(TAG, "Error adding document", e)
                         }
                     // Launch main activity
-                    val intent = MainActivity.getIntent(this)
+                    val intent = HomeActivity.getIntent(this)
                     startActivity(intent)
                     // Finish this activity
                     finish()

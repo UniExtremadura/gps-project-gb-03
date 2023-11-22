@@ -14,6 +14,7 @@ import com.unex.musicgo.databinding.GeneralActivityBinding
 import com.unex.musicgo.models.Song
 import com.unex.musicgo.ui.fragments.HomeFragment
 import com.unex.musicgo.ui.fragments.SearchFragment
+import com.unex.musicgo.ui.fragments.SongDetailsFragment
 import com.unex.musicgo.ui.fragments.SongListFragment
 import com.unex.musicgo.ui.interfaces.OnSearchListener
 import kotlinx.coroutines.launch
@@ -117,12 +118,8 @@ class HomeActivity : AppCompatActivity(), SongListFragment.OnSongClickListener, 
     }
 
     override fun onSongClick(song: Song) {
-        // Not yet implemented
-        Toast.makeText(
-            this,
-            "Not implemented yet",
-            Toast.LENGTH_SHORT
-        ).show()
+        val fragment = SongDetailsFragment.newInstance(song)
+        replaceFragment(fragment)
     }
 
     override fun onOptionsClick(song: Song, view: View) {

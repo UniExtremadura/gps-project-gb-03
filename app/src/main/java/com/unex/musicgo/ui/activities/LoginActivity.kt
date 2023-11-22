@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.unex.musicgo.MainActivity
 import com.unex.musicgo.databinding.LoginBinding
 
 
@@ -35,14 +34,13 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         if (auth.currentUser != null) {
-            /* auth.signOut()*/
+            // auth.signOut()
 
-             // Launch the main activity
-             val intent = MainActivity.getIntent(this)
-             startActivity(intent)
-             // Finish login activity and go to main activity
-             finish()
-
+            // Launch the main activity
+            val intent = HomeActivity.getIntent(this)
+            startActivity(intent)
+            // Finish login activity and go to main activity
+            finish()
         }
 
         with(binding) {
@@ -73,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     // Launch the main activity
-                    val intent = MainActivity.getIntent(this)
+                    val intent = HomeActivity.getIntent(this)
                     startActivity(intent)
                     // Finish login activity and go to main activity
                     finish()

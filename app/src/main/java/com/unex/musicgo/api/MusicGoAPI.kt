@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 private val service: MusicGoAPI by lazy {
@@ -33,6 +34,12 @@ private val service: MusicGoAPI by lazy {
 fun getNetworkService() = service
 
 interface MusicGoAPI {
+    @GET("tracks/{id}")
+    suspend fun getTrack(
+        @Header("Authorization") auth: String,
+        @Path("id") id: String
+    ): Items
+
     @GET("search")
     suspend fun search(
         @Header("Authorization") auth: String,
