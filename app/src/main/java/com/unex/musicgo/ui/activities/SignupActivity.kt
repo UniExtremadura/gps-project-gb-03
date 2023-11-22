@@ -106,6 +106,35 @@ class SignupActivity : AppCompatActivity() {
                     // Finish this activity
                     finish()
                 } else {
+                    // Check if the exception is because the user already exists
+                    if (task.exception.toString().contains("FirebaseAuthUserCollisionException")) {
+                        Toast.makeText(
+                            baseContext,
+                            "User already exists.",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        return@addOnCompleteListener
+                    }
+                    // Check if the exception is because the email is not valid
+                    if (task.exception.toString()
+                            .contains("FirebaseAuthInvalidCredentialsException")
+                    ) {
+                        Toast.makeText(
+                            baseContext,
+                            "Invalid email.",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        return@addOnCompleteListener
+                    }
+                    // Check if the password is too weak
+                    if (task.exception.toString().contains("FirebaseAuthWeakPasswordException")) {
+                        Toast.makeText(
+                            baseContext,
+                            "Password too weak. Must be at least 6 characters.",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        return@addOnCompleteListener
+                    }
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(

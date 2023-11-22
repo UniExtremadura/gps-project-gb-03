@@ -13,6 +13,12 @@
     <string name="Surname">Apellidos</string>
     <string name="Email">Correo electrónico</string>
     <string name="CreateAccountSignUp">Crear cuenta</string>
+    <string name="previous_song_description">Canción anterior</string>
+    <string name="information_song">Información</string>
+    <string name="name">Nombre</string>
+    <string name="Artista">Artista</string>
+    <string name="musical_note_description">Nota musical</string>
+    <string name="genre_msg">Género</string>
     <string name="dialog_delete_account_title">¿Estás seguro que desea borrar su cuenta?</string>
     <string name="error_delete_account">No se ha podido eliminar la cuenta</string>
     <string name="confirm">Confirmar</string>

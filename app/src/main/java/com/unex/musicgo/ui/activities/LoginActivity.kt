@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         if (auth.currentUser != null) {
-            /* auth.signOut()*/
+            // auth.signOut()
 
              // Launch the main activity
              val intent = HomeActivity.getIntent(this)
