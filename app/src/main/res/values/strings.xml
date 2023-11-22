@@ -4,7 +4,7 @@
     <string name="cover_image">Image of the song</string>
     <string name="delete">Delete</string>
     <string name="options">Options</string>
-    <string name="login_username_title">Username</string>
+    <string name="login_username_title">Email</string>
     <string name="login_password_title">Password</string>
     <string name="login_btn">Login</string>
     <string name="logo_description" translatable="false">MusicGo logo</string>
@@ -13,4 +13,17 @@
     <string name="Email">Email</string>
     <string name="CreateAccountSignUp">Create account</string>
     <string name="login_create_account_btn">Create account</string>
+    <string name="dialog_delete_account_title">Are you sure you want to delete your account?</string>
+    <string name="error_delete_account">The account could not be deleted</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="import_playlist_msg">The following shared playlist will be import:</string>
+    <string name="configuracion">CONFIGURATION</string>
+    <string name="laguage">Language</string>
+    <string name="log_out">Log out</string>
+    <string name="Log_out_info">Sign out of this device</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_account_info">Delete your profile in the app</string>
+    <string name="Profile">Profile</string>
+    <string name="Username">Username</string>
 </resources>

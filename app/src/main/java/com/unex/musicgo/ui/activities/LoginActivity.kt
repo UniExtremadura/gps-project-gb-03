@@ -6,9 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
-import com.unex.musicgo.MainActivity
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.LoginBinding
+import com.unex.musicgo.models.User
+import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity() {
@@ -27,22 +32,26 @@ class LoginActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
+    private var db: MusicGoDatabase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = LoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        lifecycleScope.launch {
+            db = MusicGoDatabase.getInstance(this@LoginActivity)
+        }
+
         auth = FirebaseAuth.getInstance()
         if (auth.currentUser != null) {
             /* auth.signOut()*/
 
              // Launch the main activity
-             val intent = MainActivity.getIntent(this)
+             val intent = HomeActivity.getIntent(this)
              startActivity(intent)
              // Finish login activity and go to main activity
              finish()
-
         }
 
         with(binding) {
@@ -72,8 +81,10 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
+                    // Save the user
+                    saveUser()
                     // Launch the main activity
-                    val intent = MainActivity.getIntent(this)
+                    val intent = HomeActivity.getIntent(this)
                     startActivity(intent)
                     // Finish login activity and go to main activity
                     finish()
@@ -86,6 +97,37 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT,
                     ).show()
                 }
+            }
+    }
+
+    private fun saveUser() {
+        val email = auth.currentUser?.email
+        Log.d(TAG, "Saving user $email")
+        val firestore = Firebase.firestore
+        // Get the user data from the database
+        val userCollection = firestore.collection("users")
+        // Search the document whose field email is equal to the user email. Only one document is expected.
+        userCollection.whereEqualTo("email", email).get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val userEmail = document.data["email"].toString()
+                    // val password = document.data["password"].toString()
+                    val userSurname = document.data["userSurname"].toString()
+                    val username = document.data["username"].toString()
+                    // Save the user in the database
+                    lifecycleScope.launch {
+                        val user = User(
+                            email = userEmail,
+                            userSurname = userSurname,
+                            username = username,
+                        )
+                        db?.userDao()?.deleteAll()
+                        db?.userDao()?.insertUser(user)
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
             }
     }
 
