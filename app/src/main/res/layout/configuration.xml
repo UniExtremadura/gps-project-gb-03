@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Contenedor horizontal para el icono y el texto -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <!-- Icono a la izquierda del texto -->
+        <ImageView
+            android:id="@+id/icon_configuration"
+            android:layout_width="48dp"
+            android:layout_height="57dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_configuration" />
+
+        <!-- Texto de la configuración -->
+        <TextView
+            android:id="@+id/explore_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/viga_regular"
+            android:gravity="center"
+            android:text="@string/configuracion"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#5C7FFB"
+            android:textSize="38sp" />
+
+    </LinearLayout>
+
+    <!-- Perfil  -->
+    <LinearLayout
+        android:id="@+id/profile_info_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginRight="35dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_profile" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profile_info_name_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Profile"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/profile_info_name_secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Username"
+                android:textColor="@color/gray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/profile_info_name"
+        android:layout_alignStart="@id/profile_info_name"
+        android:layout_alignEnd="@id/profile_info_name"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:background="@android:color/darker_gray" />
+
+    <!-- Language  -->
+    <LinearLayout
+        android:id="@+id/laguage_info_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider_1"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="35dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_language" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/laguage_info_name_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/laguage"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/laguage_info_name_secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/laguage"
+                android:textColor="@color/gray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/laguage_info_name"
+        android:layout_alignStart="@id/laguage_info_name"
+        android:layout_alignEnd="@id/laguage_info_name"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:background="@android:color/darker_gray" />
+
+    <!-- Log Out  -->
+    <LinearLayout
+        android:id="@+id/log_out_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider_2"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="35dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_log_out" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/log_out_info_name_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/log_out"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/log_out_info_secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Log_out_info"
+                android:textColor="@color/gray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/log_out_info"
+        android:layout_alignStart="@id/log_out_info"
+        android:layout_alignEnd="@id/log_out_info"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:background="@android:color/darker_gray" />
+
+    <!-- Delete account  -->
+    <LinearLayout
+        android:id="@+id/delete_account_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider_3"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="35dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_trash" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/delete_account_info_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_account"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/delete_account_info_secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_account_info"
+                android:textColor="@color/gray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

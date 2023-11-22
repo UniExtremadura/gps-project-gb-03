@@ -2,10 +2,10 @@
 <resources>
     <string name="app_name">MusicGo</string>
     <string name="recent_songs">Canciones recientes</string>
-    <string name="cover_image">Imagen de la cancion</string>
+    <string name="cover_image">Imagen de la canción</string>
     <string name="delete">Borrar</string>
     <string name="options">Opciones</string>
-    <string name="login_username_title">Nombre de usuario</string>
+    <string name="login_username_title">Correo electrónico</string>
     <string name="login_password_title">Contraseña</string>
     <string name="login_btn">Iniciar sesión</string>
     <string name="login_create_account_btn">Crear cuenta</string>
@@ -19,4 +19,17 @@
     <string name="Artista">Artista</string>
     <string name="musical_note_description">Nota musical</string>
     <string name="genre_msg">Género</string>
+    <string name="dialog_delete_account_title">¿Estás seguro que desea borrar su cuenta?</string>
+    <string name="error_delete_account">No se ha podido eliminar la cuenta</string>
+    <string name="confirm">Confirmar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="import_playlist_msg">La siguiente lista compartida será importada:</string>
+    <string name="laguage">Idioma</string>
+    <string name="log_out">Cerrar Sesión</string>
+    <string name="Log_out_info">Cierra sesión en este dispositivo</string>
+    <string name="delete_account">Borrar Cuenta</string>
+    <string name="delete_account_info">Elimina tu perfil en la aplicación</string>
+    <string name="configuracion">CONFIGURACIÓN</string>
+    <string name="Profile">Perfil</string>
+    <string name="Username">Nombre de usuario</string>
 </resources>
