@@ -13,14 +13,16 @@ import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.GeneralActivityBinding
 import com.unex.musicgo.models.Song
 import com.unex.musicgo.ui.fragments.HomeFragment
+import com.unex.musicgo.ui.fragments.ProfileStatisticsFragment
 import com.unex.musicgo.ui.fragments.SearchFragment
 import com.unex.musicgo.ui.fragments.SongDetailsFragment
 import com.unex.musicgo.ui.fragments.SettingsFragment
-import com.unex.musicgo.ui.fragments.SongListFragment
+import com.unex.musicgo.ui.fragments.StatisticsFragment
 import com.unex.musicgo.ui.interfaces.OnSearchListener
+import com.unex.musicgo.ui.interfaces.OnSongClickListener
 import kotlinx.coroutines.launch
 
-class HomeActivity : AppCompatActivity(), SongListFragment.OnSongClickListener, OnSearchListener {
+class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener, ProfileStatisticsFragment.OnConsultStatisticsListener {
 
     companion object {
         const val TAG = "HomeActivity"
@@ -59,6 +61,7 @@ class HomeActivity : AppCompatActivity(), SongListFragment.OnSongClickListener, 
                     }
 
                     R.id.profile -> {
+                        launchProfileStatistics()
                         true
                     }
 
@@ -125,6 +128,11 @@ class HomeActivity : AppCompatActivity(), SongListFragment.OnSongClickListener, 
         replaceFragment(fragment)
     }
 
+    private fun launchProfileStatistics() {
+        val fragment = ProfileStatisticsFragment.newInstance()
+        replaceFragment(fragment)
+    }
+
     override fun onSearch(query: String) {
         Log.d(TAG, "Searching $query")
         val fragment = SearchFragment.newInstance(query)
@@ -143,6 +151,11 @@ class HomeActivity : AppCompatActivity(), SongListFragment.OnSongClickListener, 
             "Not implemented yet",
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    override fun onConsultStatistics() {
+        val fragment = StatisticsFragment.newInstance()
+        replaceFragment(fragment)
     }
 
 }

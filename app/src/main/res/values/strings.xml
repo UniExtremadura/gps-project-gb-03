@@ -35,4 +35,15 @@
     <string name="play_description">Play Button</string>
     <string name="pause_description">Pause Button</string>
     <string name="stop_description">Stop Button</string>
+    <string name="image_description">Image of the song</string>
+    <string name="delete_description">Delete</string>
+    <string name="options_description">Options</string>
+    <string name="canciones_top">TOP SONGS</string>
+    <string name="estadisticas">Check your statistics</string>
+    <string name="favorite_song">Your favorite song is...</string>
+    <string name="favorite_artist">Your favorite artist is...</string>
+    <string name="minutes_listened">Your minutes listened are...</string>
+    <string name="song_description">"Song icon"</string>
+    <string name="profile_description" >Profile icon</string>
+    <string name="clock_description">Clock icon</string>
 </resources>

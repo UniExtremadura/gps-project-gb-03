@@ -45,6 +45,8 @@ class SongDetailsFragment : Fragment() {
     private var trackId: String? = null
     private var song: Song? = null
 
+    private var timeListening: Long = 0 // In milliseconds
+
     private var mediaPlayer: MediaPlayer? = null
     private var progressBarChecker: Runnable? = object : Runnable {
         override fun run() {
@@ -55,6 +57,9 @@ class SongDetailsFragment : Fragment() {
                     Log.d(TAG, "progress: $progress")
                     binding.songProgress.progress = progress
                     binding.songProgress.postDelayed(this, 1000)
+
+                    // Update the time listening
+                    timeListening += 1000
                 }
             }
         }
@@ -151,6 +156,19 @@ class SongDetailsFragment : Fragment() {
         mediaPlayer?.stop()
         mediaPlayer?.release()
         mediaPlayer = null
+        // Update the statistics of the song
+        lifecycleScope.launch {
+            song?.let {
+                Log.d(TAG, "timeListening: $timeListening")
+                db?.statisticsDao()?.registerPlay(
+                    it.id,
+                    it.title,
+                    it.artist,
+                    timeListening
+                )
+            }
+        }
+
     }
 
     private fun initProgressBar() {

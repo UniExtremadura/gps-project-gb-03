@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <!-- Favorite song -->
+    <TextView
+        android:id="@+id/favSongTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:paddingHorizontal="32dp"
+        android:text="@string/favorite_song"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/favSongLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="52dp"
+        app:layout_constraintTop_toBottomOf="@id/favSongTitle">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_music_disk_stadistics"
+            android:contentDescription="@string/song_description"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/favSongName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="Nombre de la canción"
+                android:textColor="@color/blue"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/favSongArtist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="Nombre del artista"
+                android:textColor="@color/gray"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Favorite artist -->
+    <TextView
+        android:id="@+id/favArtistTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:paddingHorizontal="32dp"
+        android:text="@string/favorite_artist"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/favSongLayout" />
+
+    <LinearLayout
+        android:id="@+id/favArtistLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="52dp"
+        app:layout_constraintTop_toBottomOf="@+id/favArtistTitle">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_profile_black"
+            android:contentDescription="@string/profile_description"/>
+
+        <TextView
+            android:id="@+id/favArtistName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ellipsize="marquee"
+            android:maxLines="1"
+            tools:text="Nombre del artista"
+            android:textColor="@color/blue"
+            android:textSize="28sp" />
+
+    </LinearLayout>
+
+    <!-- Minutes listened -->
+    <TextView
+        android:id="@+id/minutesListenedTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:paddingHorizontal="32dp"
+        android:text="@string/minutes_listened"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/favArtistLayout" />
+
+    <LinearLayout
+        android:id="@+id/minutesListenedLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="52dp"
+        app:layout_constraintTop_toBottomOf="@+id/minutesListenedTitle">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_hour_icon"
+            android:contentDescription="@string/clock_description"/>
+
+        <TextView
+            android:id="@+id/minutesListened"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ellipsize="marquee"
+            android:maxLines="1"
+            tools:text="1.5 horas"
+            android:textColor="@color/blue"
+            android:textSize="28sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
