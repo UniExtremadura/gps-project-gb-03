@@ -150,6 +150,7 @@ class SongDetailsFragment : Fragment() {
     }
 
     private fun destroyMediaPlayer() {
+        showPlayButton()
         binding.songProgress.progress = 0
         binding.songProgress.removeCallbacks(progressBarChecker)
         mediaPlayer?.stop()
@@ -243,7 +244,6 @@ class SongDetailsFragment : Fragment() {
                         setDataSource(song?.previewUrl)
                         prepare()
                     }
-                    initProgressBar()
                     // Save the song as a recent song
                     val db = MusicGoDatabase.getInstance(requireContext())
                     val recentPlayList = db?.playListDao()?.getRecentPlayList()
@@ -255,7 +255,7 @@ class SongDetailsFragment : Fragment() {
                 }
             }
             // Resume the song
-            resumeSong()
+            togglePlayAndPause()
         } catch (e: Exception) {
             Log.d(TAG, "Error: $e")
             Toast.makeText(
@@ -270,6 +270,7 @@ class SongDetailsFragment : Fragment() {
         try {
             Log.d(TAG, "resumeSong")
             mediaPlayer?.start()
+            initProgressBar()
         } catch (e: Exception) {
             Log.d(TAG, "Error: $e")
             Toast.makeText(
@@ -277,6 +278,31 @@ class SongDetailsFragment : Fragment() {
                 "Error while resuming song",
                 Toast.LENGTH_SHORT
             ).show()
+        }
+    }
+
+    private fun showPlayButton() {
+        binding.playButton.visibility = View.VISIBLE
+        binding.pauseButton.visibility = View.GONE
+    }
+
+    private fun showPauseButton() {
+        binding.playButton.visibility = View.GONE
+        binding.pauseButton.visibility = View.VISIBLE
+    }
+
+    private fun togglePlayAndPause() {
+        Log.d(TAG, "togglePlayAndPause")
+        with(binding) {
+            if (mediaPlayer?.isPlaying == true) {
+                // Pause the song and show the play button
+                mediaPlayer?.pause()
+                showPlayButton()
+            } else {
+                // Resume the song and show the pause button
+                resumeSong()
+                showPauseButton()
+            }
         }
     }
 
@@ -314,6 +340,16 @@ class SongDetailsFragment : Fragment() {
                 }
                 // Play the song
                 playSong()
+            }
+            /** Pause button can be used to pause the song */
+            pauseButton.setOnClickListener {
+                togglePlayAndPause()
+            }
+            /** Stop button can be used to stop the song */
+            stopButton.setOnClickListener {
+                if (mediaPlayer != null) {
+                    destroyMediaPlayer()
+                }
             }
         }
     }

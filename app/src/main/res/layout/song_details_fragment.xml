@@ -47,6 +47,33 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_play_song" />
 
+            <!-- Pause button -->
+            <ImageButton
+                android:id="@+id/pause_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:contentDescription="@string/pause_description"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_pause"
+                android:visibility="gone" />
+
+            <!-- Separator -->
+            <Space
+                android:layout_width="32dp"
+                android:layout_height="match_parent" />
+
+            <!-- Stop button -->
+            <ImageButton
+                android:id="@+id/stop_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@string/stop_description"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_stop_song" />
+
         </LinearLayout>
 
         <!-- Progress bar-->

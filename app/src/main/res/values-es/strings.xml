@@ -33,6 +33,8 @@
     <string name="Profile">Perfil</string>
     <string name="Username">Nombre de usuario</string>
     <string name="play_description">Botón de Play</string>
+    <string name="pause_description">Botón de pausa</string>
+    <string name="stop_description">Botón de Stop</string>
     <string name="image_description">Imagen de la canción</string>
     <string name="delete_description">Borrar</string>
     <string name="options_description">Opciones</string>
