@@ -21,6 +21,7 @@ import com.unex.musicgo.api.getNetworkService
 import com.unex.musicgo.data.api.common.Items
 import com.unex.musicgo.data.toSong
 import com.unex.musicgo.database.MusicGoDatabase
+import com.unex.musicgo.models.PlayListWithSongs
 import com.unex.musicgo.ui.interfaces.OnSongClickListener
 
 class SongListFragment : Fragment() {
@@ -39,12 +40,14 @@ class SongListFragment : Fragment() {
     private enum class Option {
         RECENT,
         SEARCH,
+        PLAYLIST
     }
 
     private var _query: String? = null
     private val query get() = _query
 
     private var _option: String? = null
+    private var playList: PlayListWithSongs? = null
     private val option get() = _option
 
     private var binding: SongListFragmentBinding? = null
@@ -58,6 +61,7 @@ class SongListFragment : Fragment() {
         arguments?.let {
             _query = it.getString("query")
             _option = it.getString("option")
+            playList = arguments?.getSerializable("playList") as PlayListWithSongs?
         }
 
         lifecycleScope.launch {
@@ -95,6 +99,8 @@ class SongListFragment : Fragment() {
                         searchSongs()
                     } else if (option == Option.RECENT.name) {
                         fetchRecentSongs()
+                    } else if (option == Option.PLAYLIST.name) {
+                        playList!!.songs
                     } else {
                         throw IllegalArgumentException("Option not found")
                     }
@@ -201,6 +207,17 @@ class SongListFragment : Fragment() {
                 .apply {
                     arguments = Bundle().apply {
                         putString("option", Option.RECENT.name)
+                    }
+                }
+        }
+
+        @JvmStatic
+        fun newPlayListInstance(playList: PlayListWithSongs): SongListFragment {
+            return SongListFragment()
+                .apply {
+                    arguments = Bundle().apply {
+                        putString("option", Option.PLAYLIST.name)
+                        putSerializable("playList", playList)
                     }
                 }
         }

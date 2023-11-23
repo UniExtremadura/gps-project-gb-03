@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.unex.musicgo.R
 import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.GeneralActivityBinding
+import com.unex.musicgo.models.PlayList
 import com.unex.musicgo.models.Song
 import com.unex.musicgo.ui.fragments.HomeFragment
 import com.unex.musicgo.ui.fragments.PlayListDetailsFragment
@@ -26,7 +27,7 @@ import com.unex.musicgo.ui.interfaces.OnCreatePlayListButtonClick
 import com.unex.musicgo.ui.interfaces.OnSongClickListener
 import kotlinx.coroutines.launch
 
-class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener, ProfileStatisticsFragment.OnConsultStatisticsListener, OnCreatePlayListButtonClick {
+class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener, ProfileStatisticsFragment.OnConsultStatisticsListener, OnCreatePlayListButtonClick, PlayListFragment.OnPlaylistClickListener {
 
     companion object {
         const val TAG = "HomeActivity"
@@ -171,6 +172,12 @@ class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener,
     override fun onCreatePlayListButtonClick() {
         Log.d(TAG, "Create playlist button clicked")
         val fragment = PlayListDetailsFragment.newCreateInstance()
+        replaceFragment(fragment)
+    }
+
+    override fun onPlayListClick(playlist: PlayList) {
+        Log.d(TAG, "Playlist ${playlist.title} clicked")
+        val fragment = PlayListDetailsFragment.newInstance(playlist)
         replaceFragment(fragment)
     }
 
