@@ -327,6 +327,12 @@ class SongDetailsFragment : Fragment() {
             pauseButton.setOnClickListener {
                 togglePlayAndPause()
             }
+            /** Stop button can be used to stop the song */
+            stopButton.setOnClickListener {
+                if (mediaPlayer != null) {
+                    destroyMediaPlayer()
+                }
+            }
         }
     }
 
