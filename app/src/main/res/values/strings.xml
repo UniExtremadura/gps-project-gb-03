@@ -46,4 +46,6 @@
     <string name="song_description">"Song icon"</string>
     <string name="profile_description" >Profile icon</string>
     <string name="clock_description">Clock icon</string>
+	<string name="new_playlist">New playlist</string>
+    <string name="description_playlist">Description</string>
 </resources>

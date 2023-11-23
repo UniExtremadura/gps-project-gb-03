@@ -1,5 +1,6 @@
 package com.unex.musicgo.ui.activities
 
+
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,16 +14,19 @@ import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.GeneralActivityBinding
 import com.unex.musicgo.models.Song
 import com.unex.musicgo.ui.fragments.HomeFragment
+import com.unex.musicgo.ui.fragments.PlayListDetailsFragment
+import com.unex.musicgo.ui.fragments.PlayListFragment
 import com.unex.musicgo.ui.fragments.ProfileStatisticsFragment
-import com.unex.musicgo.ui.fragments.SearchFragment
-import com.unex.musicgo.ui.fragments.SongDetailsFragment
-import com.unex.musicgo.ui.fragments.SettingsFragment
-import com.unex.musicgo.ui.fragments.StatisticsFragment
 import com.unex.musicgo.ui.interfaces.OnSearchListener
+import com.unex.musicgo.ui.fragments.SearchFragment
+import com.unex.musicgo.ui.fragments.SettingsFragment
+import com.unex.musicgo.ui.fragments.SongDetailsFragment
+import com.unex.musicgo.ui.fragments.StatisticsFragment
+import com.unex.musicgo.ui.interfaces.OnCreatePlayListButtonClick
 import com.unex.musicgo.ui.interfaces.OnSongClickListener
 import kotlinx.coroutines.launch
 
-class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener, ProfileStatisticsFragment.OnConsultStatisticsListener {
+class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener, ProfileStatisticsFragment.OnConsultStatisticsListener, OnCreatePlayListButtonClick {
 
     companion object {
         const val TAG = "HomeActivity"
@@ -57,6 +61,7 @@ class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener,
                     }
 
                     R.id.top_list -> {
+                        launchPlayListFragment()
                         true
                     }
 
@@ -133,6 +138,11 @@ class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener,
         replaceFragment(fragment)
     }
 
+    private fun launchPlayListFragment() {
+        val fragment = PlayListFragment.newInstance()
+        replaceFragment(fragment)
+    }
+
     override fun onSearch(query: String) {
         Log.d(TAG, "Searching $query")
         val fragment = SearchFragment.newInstance(query)
@@ -155,6 +165,12 @@ class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener,
 
     override fun onConsultStatistics() {
         val fragment = StatisticsFragment.newInstance()
+        replaceFragment(fragment)
+    }
+
+    override fun onCreatePlayListButtonClick() {
+        Log.d(TAG, "Create playlist button clicked")
+        val fragment = PlayListDetailsFragment.newCreateInstance()
         replaceFragment(fragment)
     }
 
