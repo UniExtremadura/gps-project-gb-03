@@ -48,4 +48,8 @@
     <string name="clock_description">Clock icon</string>
 	<string name="new_playlist">New playlist</string>
     <string name="description_playlist">Description</string>
+    <string name="playlists">Your playlists</string>
+    <string name="playlist_icon_description">Playlist icon</string>
+    <string name="previous_playlist_description">Previous playlist</string>
+    <string name="next_playlist_description">Next playlist</string>
 </resources>

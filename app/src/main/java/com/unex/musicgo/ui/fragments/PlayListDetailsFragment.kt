@@ -18,8 +18,7 @@ import com.unex.musicgo.models.PlayList
 import com.unex.musicgo.models.PlayListWithSongs
 import kotlinx.coroutines.launch
 
-
-class PlayListDetailsFragment : Fragment(){
+class PlayListDetailsFragment : Fragment() {
 
     private val TAG = "PlayListDetailsFragment"
 
@@ -33,7 +32,17 @@ class PlayListDetailsFragment : Fragment(){
                 }
             }
 
+        @JvmStatic
+        fun newInstance(playlist: PlayList) =
+            PlayListDetailsFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_MODE, State.VIEW.name)
+                    putSerializable(ARG_PLAYLIST, playlist)
+                }
+            }
+
         private const val ARG_MODE = "mode"
+        private const val ARG_PLAYLIST = "playList"
     }
 
     private enum class State {
@@ -44,9 +53,9 @@ class PlayListDetailsFragment : Fragment(){
     private val binding get() = _binding!!
     private var db: MusicGoDatabase? = null
 
-
     private lateinit var state: State // The state of the fragment
 
+    private var playlistWithSongs: PlayListWithSongs? = null
     private var playlist: PlayList? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,12 +63,33 @@ class PlayListDetailsFragment : Fragment(){
         Log.d(TAG, "onCreate PlayListDetailsFragment")
         arguments?.let {
             state = State.valueOf(it.getString(ARG_MODE)!!)
+            playlist = it.getSerializable(ARG_PLAYLIST) as PlayList?
             Log.d(TAG, "Initial state: $state")
             Log.d(TAG, "Playlist: $playlist")
         }
 
         lifecycleScope.launch {
             db = MusicGoDatabase.getInstance(requireContext())
+        }
+    }
+
+    private fun ListDisplayBinding.bindSongs() {
+        lifecycleScope.launch {
+            playlist?.let {
+                Log.d(TAG, "Getting playlist with songs")
+                playlistWithSongs = db?.playListDao()?.getPlayList(it.id)
+                Log.d(TAG, "Playlist with songs: $playlistWithSongs")
+                playlistWithSongs?.let {
+                    val fragment = SongListFragment.newPlayListInstance(it)
+                    with(binding) {
+                        this@PlayListDetailsFragment
+                            .childFragmentManager
+                            .beginTransaction()
+                            .replace(this.fragmentSongListContainer.id, fragment)
+                            .commit()
+                    }
+                }
+            }
         }
     }
 
@@ -210,10 +240,45 @@ class PlayListDetailsFragment : Fragment(){
         }
     }
 
+    private fun ListDisplayBinding.bindArrows() {
+        this.previousIcon.visibility = View.INVISIBLE
+        this.nextIcon.visibility = View.INVISIBLE
+        // If the state is CREATE, not do anything
+        if (state == State.CREATE) {
+            return
+        }
+        lifecycleScope.launch {
+            // Get the previous and next playlist (if exists)
+            val playlists = db?.playListDao()?.getPlayListsCreatedByUserWithoutSongs()
+            val previousPlaylist = playlists?.getOrNull(playlists.indexOf(playlist!!) - 1)
+            val nextPlaylist = playlists?.getOrNull(playlists.indexOf(playlist!!) + 1)
+            // If the previous playlist exists, show the previous arrow
+            if (previousPlaylist != null) {
+                previousIcon.visibility = View.VISIBLE
+                previousIcon.setOnClickListener {
+                    Log.d(TAG, "Click on previous icon")
+                    playlist = previousPlaylist
+                    bind()
+                }
+            }
+            // If the next playlist exists, show the next arrow
+            if (nextPlaylist != null) {
+                nextIcon.visibility = View.VISIBLE
+                nextIcon.setOnClickListener {
+                    Log.d(TAG, "Click on next icon")
+                    playlist = nextPlaylist
+                    bind()
+                }
+            }
+        }
+    }
+
     private fun bind() {
         Log.d(TAG, "Binding")
         binding.bindBrushes()
+        binding.bindSongs()
         binding.bindData()
+        binding.bindArrows()
     }
 
     private fun toggleVisibility(gone: View, visible: View) {
