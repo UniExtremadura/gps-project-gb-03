@@ -46,4 +46,6 @@
     <string name="song_description">"Icono de canción"</string>
     <string name="profile_description">Icono de perfil</string>
     <string name="clock_description">Icono de reloj</string>
+	<string name="new_playlist">Nueva lista</string>
+    <string name="description_playlist">Descripción</string>
 </resources>
