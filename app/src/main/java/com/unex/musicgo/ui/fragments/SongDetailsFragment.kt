@@ -45,6 +45,8 @@ class SongDetailsFragment : Fragment() {
     private var trackId: String? = null
     private var song: Song? = null
 
+    private var timeListening: Long = 0 // In milliseconds
+
     private var mediaPlayer: MediaPlayer? = null
     private var progressBarChecker: Runnable? = object : Runnable {
         override fun run() {
@@ -52,9 +54,12 @@ class SongDetailsFragment : Fragment() {
             mediaPlayer?.let {
                 if (it.isPlaying) {
                     val progress = it.currentPosition
-                    Log.d("PlayerActivity", "progress: $progress")
+                    Log.d(TAG, "progress: $progress")
                     binding.songProgress.progress = progress
                     binding.songProgress.postDelayed(this, 1000)
+
+                    // Update the time listening
+                    timeListening += 1000
                 }
             }
         }
@@ -124,7 +129,7 @@ class SongDetailsFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            Log.d("PlayerActivity", "Error: $e")
+            Log.d(TAG, "Error: $e")
             Toast.makeText(requireContext(), "Error while fetching song", Toast.LENGTH_SHORT)
                 .show()
         }
@@ -150,6 +155,19 @@ class SongDetailsFragment : Fragment() {
         mediaPlayer?.stop()
         mediaPlayer?.release()
         mediaPlayer = null
+        // Update the statistics of the song
+        lifecycleScope.launch {
+            song?.let {
+                Log.d(TAG, "timeListening: $timeListening")
+                db?.statisticsDao()?.registerPlay(
+                    it.id,
+                    it.title,
+                    it.artist,
+                    timeListening
+                )
+            }
+        }
+
     }
 
     private fun initProgressBar() {
@@ -195,7 +213,7 @@ class SongDetailsFragment : Fragment() {
                 db?.songsDao()?.insert(song)
             }
         } catch (e: Exception) {
-            Log.d("PlayerActivity", "Error: $e")
+            Log.d(TAG, "Error: $e")
             throw Exception("Error while fetching song")
         }
         return song
@@ -239,7 +257,7 @@ class SongDetailsFragment : Fragment() {
             // Resume the song
             resumeSong()
         } catch (e: Exception) {
-            Log.d("PlayerActivity", "Error: $e")
+            Log.d(TAG, "Error: $e")
             Toast.makeText(
                 requireContext(),
                 "Error while playing song",

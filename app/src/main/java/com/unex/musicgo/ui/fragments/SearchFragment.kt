@@ -14,6 +14,7 @@ import com.unex.musicgo.R
 import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.HomeFragmentBinding
 import com.unex.musicgo.ui.interfaces.OnSearchListener
+import com.unex.musicgo.ui.interfaces.OnSongClickListener
 import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
@@ -30,7 +31,7 @@ class SearchFragment : Fragment() {
 
     private var _binding: HomeFragmentBinding? = null
     private val binding get() = _binding!!
-    private lateinit var onSongClickListener: SongListFragment.OnSongClickListener
+    private lateinit var onSongClickListener: OnSongClickListener
     private lateinit var onSearchListener: OnSearchListener
     private var db: MusicGoDatabase? = null
 
@@ -51,7 +52,7 @@ class SearchFragment : Fragment() {
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach SongListFragment")
         super.onAttach(context)
-        if (context is SongListFragment.OnSongClickListener) {
+        if (context is OnSongClickListener) {
             onSongClickListener = context
         } else {
             throw RuntimeException("$context must implement OnSongClickListener")

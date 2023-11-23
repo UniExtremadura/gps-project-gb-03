@@ -21,6 +21,7 @@ import com.unex.musicgo.api.getNetworkService
 import com.unex.musicgo.data.api.common.Items
 import com.unex.musicgo.data.toSong
 import com.unex.musicgo.database.MusicGoDatabase
+import com.unex.musicgo.ui.interfaces.OnSongClickListener
 
 class SongListFragment : Fragment() {
 
@@ -38,11 +39,6 @@ class SongListFragment : Fragment() {
     private enum class Option {
         RECENT,
         SEARCH,
-    }
-
-    interface OnSongClickListener {
-        fun onSongClick(song: Song)
-        fun onOptionsClick(song: Song, view: View)
     }
 
     private var _query: String? = null

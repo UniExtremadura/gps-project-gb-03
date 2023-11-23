@@ -33,4 +33,15 @@
     <string name="Profile">Perfil</string>
     <string name="Username">Nombre de usuario</string>
     <string name="play_description">Botón de Play</string>
+    <string name="image_description">Imagen de la canción</string>
+    <string name="delete_description">Borrar</string>
+    <string name="options_description">Opciones</string>
+    <string name="estadisticas">Consulta tus estadísticas</string>
+    <string name="canciones_top">CANCIONES TOP</string>
+    <string name="favorite_song">Tu canción favorita es...</string>
+    <string name="favorite_artist">Tu artista favorito es...</string>
+    <string name="minutes_listened">Tus minutos escuchados son...</string>
+    <string name="song_description">"Icono de canción"</string>
+    <string name="profile_description">Icono de perfil</string>
+    <string name="clock_description">Icono de reloj</string>
 </resources>

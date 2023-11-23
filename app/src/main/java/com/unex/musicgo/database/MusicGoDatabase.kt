@@ -8,11 +8,13 @@ import androidx.room.RoomDatabase
 import com.unex.musicgo.database.dao.PlayListDao
 import com.unex.musicgo.database.dao.PlayListSongCrossRefDao
 import com.unex.musicgo.database.dao.SongsDao
+import com.unex.musicgo.database.dao.StatisticsDao
 import com.unex.musicgo.database.dao.UserDao
 import com.unex.musicgo.models.PlayList
 import com.unex.musicgo.models.PlayListSongCrossRef
 import com.unex.musicgo.models.Song
 import com.unex.musicgo.models.User
+import com.unex.musicgo.models.UserStatistics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,9 +24,10 @@ import kotlinx.coroutines.launch
         Song::class,
         PlayList::class,
         PlayListSongCrossRef::class,
+        UserStatistics::class,
         User::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class MusicGoDatabase : RoomDatabase() {
@@ -32,6 +35,7 @@ abstract class MusicGoDatabase : RoomDatabase() {
     abstract fun songsDao(): SongsDao
     abstract fun playListDao(): PlayListDao
     abstract fun playListSongCrossRefDao(): PlayListSongCrossRefDao
+    abstract fun statisticsDao(): StatisticsDao
     abstract fun userDao(): UserDao
 
     companion object {
