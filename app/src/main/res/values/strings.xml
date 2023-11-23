@@ -52,4 +52,5 @@
     <string name="playlist_icon_description">Playlist icon</string>
     <string name="previous_playlist_description">Previous playlist</string>
     <string name="next_playlist_description">Next playlist</string>
+    <string name="save_on_playlist_menu">Save on playlist</string>
 </resources>

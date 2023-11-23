@@ -3,8 +3,9 @@ package com.unex.musicgo.ui.activities
 
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.View
-import android.widget.Toast
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
@@ -156,12 +157,25 @@ class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener,
     }
 
     override fun onOptionsClick(song: Song, view: View) {
-        // Not yet implemented
-        Toast.makeText(
-            this,
-            "Not implemented yet",
-            Toast.LENGTH_SHORT
-        ).show()
+        val themedContext = ContextThemeWrapper(this@HomeActivity, R.style.PopupMenuStyleMusicGo)
+        val popup = PopupMenu(themedContext, view)
+
+        popup.menuInflater.inflate(R.menu.song_options_menu, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.add_to_playlist -> {
+                    // Launch the PlayListFragment with the song to add to a playlist
+                    val fragment = PlayListFragment.addSongToPlayListInstance(song)
+                    replaceFragment(fragment)
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        popup.show()
     }
 
     override fun onConsultStatistics() {

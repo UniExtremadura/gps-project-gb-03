@@ -16,6 +16,8 @@ import com.unex.musicgo.R
 import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.PlaylistListFragmentBinding
 import com.unex.musicgo.models.PlayList
+import com.unex.musicgo.models.PlayListSongCrossRef
+import com.unex.musicgo.models.Song
 import com.unex.musicgo.ui.adapters.PlaylistListAdapter
 import com.unex.musicgo.ui.interfaces.OnCreatePlayListButtonClick
 
@@ -35,17 +37,27 @@ class PlayListFragment : Fragment() {
 
     private var db: MusicGoDatabase? = null
 
+    private var song: Song? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate PlayListFragment")
+        Log.d(TAG, "onCreate SongListFragment")
 
         lifecycleScope.launch {
             db = MusicGoDatabase.getInstance(requireContext())
         }
+
+        arguments?.let {
+            // Check if the fragment is called from the song list
+            if (it.containsKey(ARG_SONG)) {
+                song = it.getSerializable(ARG_SONG) as Song
+                Log.d(TAG, "Song: $song")
+            }
+        }
     }
 
     override fun onAttach(context: Context) {
-        Log.d(TAG, "onAttach PlayListFragment")
+        Log.d(TAG, "onAttach SongListFragment")
         super.onAttach(context)
         if (context is OnPlaylistClickListener) {
             listener = context
@@ -63,7 +75,7 @@ class PlayListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d(TAG, "onCreateView PlayListFragment")
+        Log.d(TAG, "onCreateView SongListFragment")
         binding = PlaylistListFragmentBinding.inflate(inflater, container, false)
         return binding!!.root
     }
@@ -98,7 +110,9 @@ class PlayListFragment : Fragment() {
             adapter = PlaylistListAdapter(
                 playlists = _playlists,
                 onPlayListClick = {
-                    listener.onPlayListClick(it)
+                    if (song != null) {
+                        addSongToPlayList(it, song!!)
+                    } else listener.onPlayListClick(it)
                 },
                 context = this.context
             )
@@ -106,6 +120,29 @@ class PlayListFragment : Fragment() {
             it.recyclerView.adapter = adapter
         }
         Log.d(TAG, "setUpRecyclerView")
+    }
+
+    private fun addSongToPlayList(playlist: PlayList, song: Song) {
+        lifecycleScope.launch {
+            try {
+                // Create a new cross reference between the song and the playlist
+                val crossRef = PlayListSongCrossRef(playlist.id, song.id)
+                db?.playListSongCrossRefDao()?.insert(crossRef)
+                Toast.makeText(
+                    context,
+                    "Song added to playlist ${playlist.title}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                // Go back to the song list
+                activity?.onBackPressed()
+            } catch (error: Error) {
+                context?.let {
+                    Log.d(TAG, error.message.toString())
+                    Toast.makeText(context, "Error adding song to playlist", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
     }
 
     override fun onStart() {
@@ -128,8 +165,16 @@ class PlayListFragment : Fragment() {
     companion object {
 
         const val TAG = "PlayListFragment"
+        const val ARG_SONG = "song"
 
         @JvmStatic
         fun newInstance() = PlayListFragment()
+
+        @JvmStatic
+        fun addSongToPlayListInstance(song: Song) = PlayListFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(ARG_SONG, song)
+            }
+        }
     }
 }
