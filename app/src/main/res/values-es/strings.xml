@@ -52,4 +52,5 @@
     <string name="playlist_icon_description">Icono de lista</string>
     <string name="previous_playlist_description">Lista anterior</string>
     <string name="next_playlist_description">Siguiente lista</string>
+    <string name="save_on_playlist_menu">Guardar en lista</string>
 </resources>
