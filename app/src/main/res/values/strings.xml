@@ -33,5 +33,6 @@
     <string name="Profile">Profile</string>
     <string name="Username">Username</string>
     <string name="play_description">Play Button</string>
+    <string name="pause_description">Pause Button</string>
     <string name="stop_description">Stop Button</string>
 </resources>
