@@ -25,10 +25,19 @@
                     android:id="@+id/playlist_next_prev"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="48dp"
                     android:gravity="center"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="48dp">
+                    app:layout_constraintTop_toTopOf="parent">
 
+                    <ImageView
+                        android:id="@+id/previous_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="16dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:contentDescription="@string/previous_playlist_description"
+                        android:src="@drawable/ic_previous" />
 
                     <ImageView
                         android:id="@+id/playlist_icon"
@@ -36,12 +45,22 @@
                         android:layout_height="232dp"
                         android:backgroundTint="@android:color/transparent"
                         android:backgroundTintMode="src_over"
+                        android:contentDescription="@string/playlist_icon_description"
                         android:src="@drawable/ic_playlist"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:contentDescription="@string/image_description" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
+                    <ImageView
+                        android:id="@+id/next_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:contentDescription="@string/next_playlist_description"
+                        android:src="@drawable/ic_next"
+                        app:layout_constraintStart_toStartOf="@id/playlist_icon" />
 
                 </LinearLayout>
 
@@ -96,9 +115,9 @@
                         android:layout_height="40dp"
                         android:backgroundTint="@android:color/transparent"
                         android:backgroundTintMode="src_over"
+                        android:contentDescription="@string/image_description"
                         android:src="@drawable/ic_brush"
-                        app:layout_constraintStart_toStartOf="@id/playlist_icon"
-                        android:contentDescription="@string/image_description" />
+                        app:layout_constraintStart_toStartOf="@id/playlist_icon" />
 
                 </LinearLayout>
 
@@ -146,9 +165,9 @@
                         android:layout_height="40dp"
                         android:backgroundTint="@android:color/transparent"
                         android:backgroundTintMode="src_over"
+                        android:contentDescription="@string/description_playlist"
                         android:src="@drawable/ic_brush"
-                        app:layout_constraintStart_toStartOf="@id/playlist_icon"
-                        android:contentDescription="@string/description_playlist" />
+                        app:layout_constraintStart_toStartOf="@id/playlist_icon" />
                 </LinearLayout>
 
                 <View
