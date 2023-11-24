@@ -53,4 +53,5 @@
     <string name="previous_playlist_description">Lista anterior</string>
     <string name="next_playlist_description">Siguiente lista</string>
     <string name="save_on_playlist_menu">Guardar en lista</string>
+    <string name="dialog_delete_song_from_list">¿Estás seguro que desea borrar la canción de la lista?</string>
 </resources>

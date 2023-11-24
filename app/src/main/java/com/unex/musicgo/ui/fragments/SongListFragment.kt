@@ -30,6 +30,7 @@ class SongListFragment : Fragment() {
     private var _songs: List<Song> = emptyList()
 
     private lateinit var listener: OnSongClickListener
+    private var onDeleteListener: OnSongDeleteListener? = null
 
     /**
      * Private enum class to handle the options:
@@ -41,6 +42,10 @@ class SongListFragment : Fragment() {
         RECENT,
         SEARCH,
         PLAYLIST
+    }
+
+    interface OnSongDeleteListener {
+        fun onSongDelete(song: Song)
     }
 
     private var _query: String? = null
@@ -76,6 +81,11 @@ class SongListFragment : Fragment() {
             listener = context
         } else {
             throw RuntimeException("$context must implement OnSongClickListener")
+        }
+        if (parentFragment is OnSongDeleteListener) {
+            Log.d(TAG, "OnSongDeleteListener")
+            Log.d(TAG, "Parent fragment: $parentFragment")
+            onDeleteListener = parentFragment as OnSongDeleteListener
         }
     }
 
@@ -173,6 +183,10 @@ class SongListFragment : Fragment() {
                 onOptionsClick = { song, view ->
                     listener.onOptionsClick(song, view)
                 },
+                onDeleteClick = {
+                    onDeleteListener?.onSongDelete(it)
+                },
+                showTrash = option == Option.PLAYLIST.name,
                 context = this.context
             )
             it.rvSongList.layoutManager = LinearLayoutManager(context)
