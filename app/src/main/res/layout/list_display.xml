@@ -19,8 +19,31 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/icons_trash_share"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
+                    <ImageView
+                        android:id="@+id/trash_icon"
+                        android:contentDescription="@string/delete"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:src="@drawable/ic_empty_trash" />
 
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="2" />
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/playlist_next_prev"
                     android:layout_width="match_parent"
@@ -38,6 +61,7 @@
                         android:backgroundTintMode="src_over"
                         android:contentDescription="@string/previous_playlist_description"
                         android:src="@drawable/ic_previous" />
+
 
                     <ImageView
                         android:id="@+id/playlist_icon"

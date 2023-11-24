@@ -1,5 +1,6 @@
 package com.unex.musicgo.ui.fragments
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.unex.musicgo.R
 import com.unex.musicgo.database.MusicGoDatabase
+import com.unex.musicgo.databinding.DialogBinding
 import com.unex.musicgo.databinding.ListDisplayBinding
 import com.unex.musicgo.models.PlayList
 import com.unex.musicgo.models.PlayListWithSongs
@@ -272,6 +274,49 @@ class PlayListDetailsFragment : Fragment() {
             }
         }
     }
+    private fun ListDisplayBinding.bindTrash() {
+        // If the state is CREATE, hide the trash icon
+        if (state == State.CREATE) {
+            this.trashIcon.visibility = View.GONE
+        }
+
+        this.trashIcon.setOnClickListener {
+            Log.d(TAG, "Click on trash icon")
+
+            // Show a dialog to confirm the deletion of the playlist
+            val dialog = Dialog(requireContext())
+
+            // Dialog binding
+            val dialogBinding = DialogBinding.inflate(layoutInflater)
+            dialog.setContentView(dialogBinding.root)
+
+            with(dialogBinding) {
+                dialogMessage.text = getString(R.string.dialog_delete_playlist_menu)
+                dialogPlaylistName.text = playlist?.title
+
+                confirmButton.setOnClickListener {
+                    Log.d(TAG, "Deleting playlist")
+                    playlist?.let {
+                        Log.d(TAG, "Deleting playlist ${it}")
+                        lifecycleScope.launch {
+                            db?.playListSongCrossRefDao()?.deleteAllByPlayList(it.id)
+                            db?.playListDao()?.delete(it.id)
+                            Log.d(TAG, "Playlist deleted")
+                            requireActivity().onBackPressed()
+                        }
+                    }
+                    dialog.dismiss()
+                }
+
+                cancelButton.setOnClickListener {
+                    dialog.dismiss()
+                }
+            }
+
+            // Show the dialog
+            dialog.show()
+        }
+    }
 
     private fun bind() {
         Log.d(TAG, "Binding")
@@ -279,6 +324,7 @@ class PlayListDetailsFragment : Fragment() {
         binding.bindSongs()
         binding.bindData()
         binding.bindArrows()
+        binding.bindTrash()
     }
 
     private fun toggleVisibility(gone: View, visible: View) {
