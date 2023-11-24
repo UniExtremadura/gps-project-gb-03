@@ -279,6 +279,49 @@ class PlayListDetailsFragment : Fragment(), SongListFragment.OnSongDeleteListene
             }
         }
     }
+    private fun ListDisplayBinding.bindTrash() {
+        // If the state is CREATE, hide the trash icon
+        if (state == State.CREATE) {
+            this.trashIcon.visibility = View.GONE
+        }
+
+        this.trashIcon.setOnClickListener {
+            Log.d(TAG, "Click on trash icon")
+
+            // Show a dialog to confirm the deletion of the playlist
+            val dialog = Dialog(requireContext())
+
+            // Dialog binding
+            val dialogBinding = DialogBinding.inflate(layoutInflater)
+            dialog.setContentView(dialogBinding.root)
+
+            with(dialogBinding) {
+                dialogMessage.text = getString(R.string.dialog_delete_playlist_menu)
+                dialogPlaylistName.text = playlist?.title
+
+                confirmButton.setOnClickListener {
+                    Log.d(TAG, "Deleting playlist")
+                    playlist?.let {
+                        Log.d(TAG, "Deleting playlist ${it}")
+                        lifecycleScope.launch {
+                            db?.playListSongCrossRefDao()?.deleteAllByPlayList(it.id)
+                            db?.playListDao()?.delete(it.id)
+                            Log.d(TAG, "Playlist deleted")
+                            requireActivity().onBackPressed()
+                        }
+                    }
+                    dialog.dismiss()
+                }
+
+                cancelButton.setOnClickListener {
+                    dialog.dismiss()
+                }
+            }
+
+            // Show the dialog
+            dialog.show()
+        }
+    }
 
     private fun ListDisplayBinding.bindShare() {
         // If the state is CREATE, hide the share icon
@@ -324,6 +367,7 @@ class PlayListDetailsFragment : Fragment(), SongListFragment.OnSongDeleteListene
         binding.bindSongs()
         binding.bindData()
         binding.bindArrows()
+        binding.bindTrash()
         binding.bindShare()
     }
 
