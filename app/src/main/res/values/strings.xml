@@ -54,4 +54,5 @@
     <string name="next_playlist_description">Next playlist</string>
     <string name="save_on_playlist_menu">Save on playlist</string>
     <string name="share_description">Share</string>
+    <string name="dialog_delete_song_from_list">Are you sure you want to delete the song from the playlist?</string>
 </resources>

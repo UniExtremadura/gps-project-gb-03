@@ -1,5 +1,6 @@
 package com.unex.musicgo.ui.fragments
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -16,13 +17,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.unex.musicgo.R
 import com.unex.musicgo.database.MusicGoDatabase
+import com.unex.musicgo.databinding.DialogBinding
 import com.unex.musicgo.databinding.ListDisplayBinding
 import com.unex.musicgo.models.PlayList
 import com.unex.musicgo.models.PlayListWithSongs
+import com.unex.musicgo.models.Song
 import kotlinx.coroutines.launch
 import java.nio.charset.StandardCharsets
 
-class PlayListDetailsFragment : Fragment() {
+class PlayListDetailsFragment : Fragment(), SongListFragment.OnSongDeleteListener {
 
     private val TAG = "PlayListDetailsFragment"
 
@@ -354,6 +357,38 @@ class PlayListDetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // avoid memory leaks
+    }
+
+    override fun onSongDelete(song: Song) {
+        Log.d(TAG, "onDeleteSongFromPlayListClick")
+
+        // Show a dialog to confirm the deletion of the song
+        val dialog = Dialog(requireContext())
+        val dialogBinding = DialogBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        with(dialogBinding) {
+            dialogMessage.text = getString(R.string.dialog_delete_song_from_list)
+            dialogPlaylistName.text = song.title
+
+            confirmButton.setOnClickListener {
+                lifecycleScope.launch {
+                    playlist?.let {
+                        db?.playListSongCrossRefDao()?.delete(it.id, song.id)
+                        Log.d(TAG, "Song deleted from playlist")
+                        this@PlayListDetailsFragment.bind()
+                    }
+                }
+                dialog.dismiss()
+            }
+
+            cancelButton.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+
+        // Show the dialog
+        dialog.show()
     }
 
 }

@@ -13,6 +13,8 @@ class SongListAdapter(
     private var songs: List<Song>,
     private val onClick: (song: Song) -> Unit,
     private val onOptionsClick: (song: Song, view: View) -> Unit,
+    private val onDeleteClick: (song: Song) -> Unit,
+    private val showTrash: Boolean,
     private val context: Context?
 ) : RecyclerView.Adapter<SongListAdapter.ShowViewHolder>() {
 
@@ -20,6 +22,8 @@ class SongListAdapter(
         private val binding: SongListBinding,
         private val onClick: (song: Song) -> Unit,
         private val onOptionsClick: (song: Song, view: View) -> Unit,
+        private val onDeleteClick: (song: Song) -> Unit,
+        private val showTrash: Boolean,
         private val context: Context?
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(song: Song, totalItems: Int) {
@@ -40,13 +44,20 @@ class SongListAdapter(
                 songOptions.setOnClickListener {
                     onOptionsClick(song, it)
                 }
+
+                if (showTrash) {
+                    songTrash.visibility = View.VISIBLE
+                    songTrash.setOnClickListener {
+                        onDeleteClick(song)
+                    }
+                }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
         val binding = SongListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ShowViewHolder(binding, onClick, onOptionsClick, context)
+        return ShowViewHolder(binding, onClick, onOptionsClick, onDeleteClick, showTrash, context)
     }
 
     override fun getItemCount() = songs.size
