@@ -108,6 +108,53 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Bajo el cielo estrellado, nuestros sueños se entrelazan en un vals eterno, susurrando promesas de amor y esperanza" />
 
+            <!-- Stars / Valoration -->
+            <LinearLayout
+                android:id="@+id/song_info_stars"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/song_info_names">
+
+                <ImageView
+                    android:id="@+id/star_1"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/stars_description"
+                    android:src="@drawable/ic_star" />
+
+                <ImageView
+                    android:id="@+id/star_2"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/stars_description"
+                    android:src="@drawable/ic_star" />
+
+                <ImageView
+                    android:id="@+id/star_3"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/stars_description"
+                    android:src="@drawable/ic_star" />
+
+                <ImageView
+                    android:id="@+id/star_4"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/stars_description"
+                    android:src="@drawable/ic_star" />
+
+                <ImageView
+                    android:id="@+id/star_5"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/stars_description"
+                    android:src="@drawable/ic_star" />
+
+            </LinearLayout>
+
             <!-- Info block initial text -->
             <TextView
                 android:id="@+id/song_info_title"
@@ -118,7 +165,7 @@
                 android:textColor="@color/blue"
                 android:textSize="24sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/song_info_names" />
+                app:layout_constraintTop_toBottomOf="@+id/song_info_stars" />
 
             <!-- Artist -->
             <LinearLayout
@@ -226,6 +273,53 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/song_info_genre" />
+
+            <!-- Comments -->
+            <LinearLayout
+                android:id="@+id/song_info_comments_block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/new_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@string/new_comment_title"
+                        android:textColor="@color/blue"
+                        android:textSize="24sp" />
+
+                    <EditText
+                        android:id="@+id/new_comment_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/new_comment_hint"
+                        android:textAllCaps="false"
+                        android:textColor="@color/gray"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Comments is a frame to add comments dynamically -->
+            <FrameLayout
+                android:id="@+id/song_info_comments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/song_info_comments_block" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -47,11 +47,11 @@ class LoginActivity : AppCompatActivity() {
         if (auth.currentUser != null) {
             // auth.signOut()
 
-             // Launch the main activity
-             val intent = HomeActivity.getIntent(this)
-             startActivity(intent)
-             // Finish login activity and go to main activity
-             finish()
+            // Launch the main activity
+            val intent = HomeActivity.getIntent(this)
+            startActivity(intent)
+            // Finish login activity and go to main activity
+            finish()
         }
 
         with(binding) {
