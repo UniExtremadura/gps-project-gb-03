@@ -2,7 +2,9 @@ package com.unex.musicgo.ui.fragments
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,15 +14,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
 import com.unex.musicgo.R
 import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.DialogBinding
 import com.unex.musicgo.databinding.ListDisplayBinding
 import com.unex.musicgo.models.PlayList
 import com.unex.musicgo.models.PlayListWithSongs
+import com.unex.musicgo.models.Song
 import kotlinx.coroutines.launch
+import java.nio.charset.StandardCharsets
 
-class PlayListDetailsFragment : Fragment() {
+class PlayListDetailsFragment : Fragment(), SongListFragment.OnSongDeleteListener {
 
     private val TAG = "PlayListDetailsFragment"
 
@@ -318,6 +323,44 @@ class PlayListDetailsFragment : Fragment() {
         }
     }
 
+    private fun ListDisplayBinding.bindShare() {
+        // If the state is CREATE, hide the share icon
+        if (state == State.CREATE) {
+            this.shareIcon.visibility = View.GONE
+        }
+
+        this.shareIcon.setOnClickListener {
+            Log.d(TAG, "Click on share icon")
+
+            // Encode the playlist to json and then to base64
+            val gson = Gson()
+            val playlistJson = gson.toJson(playlistWithSongs)
+            val encodedJson = Base64.encodeToString(
+                playlistJson.toByteArray(StandardCharsets.UTF_8),
+                Base64.NO_WRAP
+            )
+
+            // The uri is: musicgo://playlist?data=encodedJson
+            val uri = "musicgo://playlist?data=$encodedJson"
+            val redirectUrl =
+                "655a04d83b89142e66e542c0--flourishing-cajeta-2f3342.netlify.app/musicgo/redirect?url=$uri"
+
+            // The message to share is: "Check out this playlist: $redirectUrl"
+            val message = "Check out this playlist: $redirectUrl"
+
+            // Create the intent
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, message)
+                type = "text/plain"
+            }
+
+            // Init the intent chooser
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        }
+    }
+
     private fun bind() {
         Log.d(TAG, "Binding")
         binding.bindBrushes()
@@ -325,6 +368,7 @@ class PlayListDetailsFragment : Fragment() {
         binding.bindData()
         binding.bindArrows()
         binding.bindTrash()
+        binding.bindShare()
     }
 
     private fun toggleVisibility(gone: View, visible: View) {
@@ -357,6 +401,38 @@ class PlayListDetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // avoid memory leaks
+    }
+
+    override fun onSongDelete(song: Song) {
+        Log.d(TAG, "onDeleteSongFromPlayListClick")
+
+        // Show a dialog to confirm the deletion of the song
+        val dialog = Dialog(requireContext())
+        val dialogBinding = DialogBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        with(dialogBinding) {
+            dialogMessage.text = getString(R.string.dialog_delete_song_from_list)
+            dialogPlaylistName.text = song.title
+
+            confirmButton.setOnClickListener {
+                lifecycleScope.launch {
+                    playlist?.let {
+                        db?.playListSongCrossRefDao()?.delete(it.id, song.id)
+                        Log.d(TAG, "Song deleted from playlist")
+                        this@PlayListDetailsFragment.bind()
+                    }
+                }
+                dialog.dismiss()
+            }
+
+            cancelButton.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+
+        // Show the dialog
+        dialog.show()
     }
 
 }

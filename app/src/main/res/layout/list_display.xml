@@ -43,6 +43,19 @@
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:layout_weight="2" />
+
+                    <ImageView
+                        android:id="@+id/share_icon"
+                        android:layout_width="0dp"
+                        android:contentDescription="@string/share_description"
+                        android:layout_height="50dp"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:src="@drawable/ic_share" />
+
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/playlist_next_prev"
@@ -61,7 +74,6 @@
                         android:backgroundTintMode="src_over"
                         android:contentDescription="@string/previous_playlist_description"
                         android:src="@drawable/ic_previous" />
-
 
                     <ImageView
                         android:id="@+id/playlist_icon"
