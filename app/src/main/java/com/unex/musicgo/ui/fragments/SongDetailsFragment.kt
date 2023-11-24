@@ -6,6 +6,9 @@ import android.media.MediaPlayer
 import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +17,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.unex.musicgo.R
 import com.unex.musicgo.api.getAuthToken
 import com.unex.musicgo.api.getNetworkService
 import com.unex.musicgo.data.toSong
 import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.SongDetailsFragmentBinding
+import com.unex.musicgo.models.Comment
 import com.unex.musicgo.models.PlayListSongCrossRef
+import com.unex.musicgo.models.PlayListWithSongs
 import com.unex.musicgo.models.Song
 import kotlinx.coroutines.launch
 
@@ -44,6 +53,8 @@ class SongDetailsFragment : Fragment() {
 
     private var trackId: String? = null
     private var song: Song? = null
+
+    private var favoritesPlayList: PlayListWithSongs? = null
 
     private var timeListening: Long = 0 // In milliseconds
 
@@ -74,6 +85,7 @@ class SongDetailsFragment : Fragment() {
 
         lifecycleScope.launch {
             db = MusicGoDatabase.getInstance(requireContext())
+            favoritesPlayList = db?.playListDao()?.getFavoritesPlayList()
         }
     }
 
@@ -168,7 +180,6 @@ class SongDetailsFragment : Fragment() {
                 )
             }
         }
-
     }
 
     private fun initProgressBar() {
@@ -306,15 +317,108 @@ class SongDetailsFragment : Fragment() {
         }
     }
 
+    private fun fillStars(stars: Int) {
+        Log.d(TAG, "fillStars: $stars")
+        Log.d(TAG, "favorites: $favoritesPlayList")
+        with(binding) {
+            when (stars) {
+                1 -> {
+                    star1.setImageResource(R.drawable.ic_star_filled)
+                    star2.setImageResource(R.drawable.ic_star)
+                    star3.setImageResource(R.drawable.ic_star)
+                    star4.setImageResource(R.drawable.ic_star)
+                    star5.setImageResource(R.drawable.ic_star)
+                }
+
+                2 -> {
+                    star1.setImageResource(R.drawable.ic_star_filled)
+                    star2.setImageResource(R.drawable.ic_star_filled)
+                    star3.setImageResource(R.drawable.ic_star)
+                    star4.setImageResource(R.drawable.ic_star)
+                    star5.setImageResource(R.drawable.ic_star)
+                }
+
+                3 -> {
+                    star1.setImageResource(R.drawable.ic_star_filled)
+                    star2.setImageResource(R.drawable.ic_star_filled)
+                    star3.setImageResource(R.drawable.ic_star_filled)
+                    star4.setImageResource(R.drawable.ic_star)
+                    star5.setImageResource(R.drawable.ic_star)
+                }
+
+                4 -> {
+                    star1.setImageResource(R.drawable.ic_star_filled)
+                    star2.setImageResource(R.drawable.ic_star_filled)
+                    star3.setImageResource(R.drawable.ic_star_filled)
+                    star4.setImageResource(R.drawable.ic_star_filled)
+                    star5.setImageResource(R.drawable.ic_star)
+                }
+
+                5 -> {
+                    star1.setImageResource(R.drawable.ic_star_filled)
+                    star2.setImageResource(R.drawable.ic_star_filled)
+                    star3.setImageResource(R.drawable.ic_star_filled)
+                    star4.setImageResource(R.drawable.ic_star_filled)
+                    star5.setImageResource(R.drawable.ic_star_filled)
+                }
+            }
+        }
+    }
+
+    private fun updateSongRating(rate: Int) {
+        lifecycleScope.launch {
+            song?.isRated = true
+            song?.rating = rate
+            favoritesPlayList?.let {
+                val songInFavorites = it.songs.find {
+                    it.id == song?.id
+                } != null
+                db?.songsDao()?.insert(song!!)
+                if (songInFavorites && rate < 4) {
+                    db?.playListSongCrossRefDao()?.delete(it.playlist.id, song!!.id)
+                } else if (rate >= 4) {
+                    val crossRef = PlayListSongCrossRef(it.playlist.id, song!!.id)
+                    db?.playListSongCrossRefDao()?.insert(crossRef)
+                }
+            }
+        }
+    }
+
     private fun bindSong() {
         with(binding) {
             songInfoNames.text = song?.title
             songInfoArtistMain.text = song?.artist
             songInfoGenreMain.text = song?.genres ?: "Unknown"
+            song?.isRated?.let {
+                if (it) {
+                    fillStars(song?.rating ?: 0)
+                }
+            }
             /** Use glide to load the image */
             Glide.with(requireContext())
                 .load(song?.coverPath)
                 .into(songIcon)
+            /** Add click listener to stars */
+            star1.setOnClickListener {
+                fillStars(1)
+                updateSongRating(1)
+            }
+            star2.setOnClickListener {
+                fillStars(2)
+                updateSongRating(2)
+            }
+            star3.setOnClickListener {
+                fillStars(3)
+                updateSongRating(3)
+            }
+            star4.setOnClickListener {
+                fillStars(4)
+                updateSongRating(4)
+            }
+            star5.setOnClickListener {
+                fillStars(5)
+                updateSongRating(5)
+            }
             /** Play button can be used to play the song */
             playButton.setOnClickListener {
                 // Check if there is internet connection
@@ -351,7 +455,80 @@ class SongDetailsFragment : Fragment() {
                     destroyMediaPlayer()
                 }
             }
+            /** Bind the comments section with the CommentListFragment */
+            launchCommentsFragment()
+            /** New comment input */
+            val handler = Handler(Looper.getMainLooper())
+            val delay = 3000L // 3 seconds
+            newCommentField.addTextChangedListener(object : TextWatcher {
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    // Stop the previous operation of saving the text
+                    handler.removeCallbacksAndMessages(null)
+
+                    // Save the text after delay
+                    handler.postDelayed({
+                        postComment()
+                    }, delay)
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun afterTextChanged(s: android.text.Editable?) {}
+            })
         }
+    }
+
+    private fun SongDetailsFragmentBinding.postComment() {
+        Log.d(TAG, "postComment")
+        val comment: String = newCommentField.text.toString()
+        if (comment.isEmpty()) return
+        // Save comment on the firebase database
+        val email = Firebase.auth.currentUser?.email
+        if (email == null) {
+            Toast.makeText(
+                requireContext(),
+                "You must be logged in to comment",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        lifecycleScope.launch {
+            val username = db?.userDao()?.getUserByEmail(email)?.username
+            username?.let {
+                val firestore = Firebase.firestore
+                val commentRef = firestore.collection("comments").document()
+                val commentObj = Comment(
+                    songId = song!!.id,
+                    authorEmail = email,
+                    username = it,
+                    description = comment,
+                    timestamp = System.currentTimeMillis()
+                )
+                commentRef.set(commentObj)
+                Toast.makeText(
+                    requireContext(),
+                    "Comment posted",
+                    Toast.LENGTH_SHORT
+                ).show()
+                newCommentField.clearFocus()
+                newCommentField.text.clear()
+                // Refresh the comments list
+                launchCommentsFragment()
+            }
+        }
+    }
+
+    private fun launchCommentsFragment() {
+        val commentListFragment = CommentListFragment.newInstance(song!!)
+        childFragmentManager.beginTransaction()
+            .replace(binding.songInfoComments.id, commentListFragment)
+            .commit()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

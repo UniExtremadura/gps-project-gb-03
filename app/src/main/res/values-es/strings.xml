@@ -55,4 +55,8 @@
     <string name="save_on_playlist_menu">Guardar en lista</string>
     <string name="dialog_delete_song_from_list">¿Estás seguro que desea borrar la canción de la lista?</string>
     <string name="share_description">Compartir</string>
+    <string name="new_comment_title">Publica un nuevo comentario</string>
+    <string name="new_comment_hint">Escribe un comentario</string>
+    <string name="yourFavorites">Tus favoritos</string>
+    <string name="stars_description">Icono de estrella</string>
 </resources>

@@ -22,6 +22,7 @@ import com.unex.musicgo.models.PlayList
 import com.unex.musicgo.models.PlayListSongCrossRef
 import com.unex.musicgo.models.PlayListWithSongs
 import com.unex.musicgo.models.Song
+import com.unex.musicgo.ui.fragments.FavoritesFragment
 import com.unex.musicgo.ui.fragments.HomeFragment
 import com.unex.musicgo.ui.fragments.PlayListDetailsFragment
 import com.unex.musicgo.ui.fragments.PlayListFragment
@@ -36,7 +37,9 @@ import com.unex.musicgo.ui.interfaces.OnSongClickListener
 import kotlinx.coroutines.launch
 import java.nio.charset.StandardCharsets
 
-class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener, ProfileStatisticsFragment.OnConsultStatisticsListener, OnCreatePlayListButtonClick, PlayListFragment.OnPlaylistClickListener {
+class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener,
+    ProfileStatisticsFragment.OnConsultStatisticsListener, OnCreatePlayListButtonClick,
+    PlayListFragment.OnPlaylistClickListener {
 
     companion object {
         const val TAG = "HomeActivity"
@@ -67,6 +70,7 @@ class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener,
                     }
 
                     R.id.favourite -> {
+                        launchFavoritesFragment()
                         true
                     }
 
@@ -272,6 +276,11 @@ class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener,
 
         // Show the dialog
         dialog.show()
+    }
+
+    private fun launchFavoritesFragment() {
+        val fragment = FavoritesFragment.newInstance()
+        replaceFragment(fragment)
     }
 
 }

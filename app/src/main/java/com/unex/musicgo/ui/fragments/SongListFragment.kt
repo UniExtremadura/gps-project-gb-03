@@ -41,7 +41,8 @@ class SongListFragment : Fragment() {
     private enum class Option {
         RECENT,
         SEARCH,
-        PLAYLIST
+        PLAYLIST,
+        FAVORITES
     }
 
     interface OnSongDeleteListener {
@@ -50,6 +51,7 @@ class SongListFragment : Fragment() {
 
     private var _query: String? = null
     private val query get() = _query
+    private var stars: Int? = null
 
     private var _option: String? = null
     private var playList: PlayListWithSongs? = null
@@ -66,6 +68,7 @@ class SongListFragment : Fragment() {
         arguments?.let {
             _query = it.getString("query")
             _option = it.getString("option")
+            stars = it.getInt("stars")
             playList = arguments?.getSerializable("playList") as PlayListWithSongs?
         }
 
@@ -111,6 +114,8 @@ class SongListFragment : Fragment() {
                         fetchRecentSongs()
                     } else if (option == Option.PLAYLIST.name) {
                         playList!!.songs
+                    } else if (option == Option.FAVORITES.name) {
+                        fetchFavoritesSongs()
                     } else {
                         throw IllegalArgumentException("Option not found")
                     }
@@ -137,6 +142,23 @@ class SongListFragment : Fragment() {
 
     private suspend fun fetchRecentSongs(): List<Song> =
         db?.playListDao()?.getRecentPlayList()?.songs ?: emptyList()
+
+    private suspend fun fetchFavoritesSongs(): List<Song> {
+        val favoritesPlayList = db?.playListDao()?.getFavoritesPlayList()
+            ?: throw Error("Favorites not found")
+        var songs = favoritesPlayList.songs
+        stars?.let {
+            if (stars == 4 || stars == 5) {
+                songs = favoritesPlayList.songs.filter {
+                    Log.d(TAG, "Rating: ${it.rating}")
+                    Log.d(TAG, "Stars: $stars")
+                    it.rating == stars
+                }
+            }
+        }
+        Log.d(TAG, "Favorites: $songs")
+        return songs
+    }
 
     private suspend fun searchSongs(): List<Song> {
         if (query == null) {
@@ -232,6 +254,17 @@ class SongListFragment : Fragment() {
                     arguments = Bundle().apply {
                         putString("option", Option.PLAYLIST.name)
                         putSerializable("playList", playList)
+                    }
+                }
+        }
+
+        @JvmStatic
+        fun newFavoritesInstance(stars: Int? = null): SongListFragment {
+            return SongListFragment()
+                .apply {
+                    arguments = Bundle().apply {
+                        putString("option", Option.FAVORITES.name)
+                        putInt("stars", stars ?: 0)
                     }
                 }
         }
