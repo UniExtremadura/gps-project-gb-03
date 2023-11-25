@@ -62,6 +62,14 @@ class SignupActivity : AppCompatActivity() {
 
     private fun signup(email: String, password: String, username: String, userSurname: String) {
         Log.d(TAG, "Logging in")
+        if (email.isEmpty() || password.isEmpty() || username.isEmpty() || userSurname.isEmpty()) {
+            Toast.makeText(
+                baseContext,
+                "Please fill all the fields.",
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        }
         Log.d(
             TAG,
             "Email: $email, Password: $password, Username: $username, UserSurname: $userSurname"

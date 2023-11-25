@@ -72,7 +72,6 @@ abstract class MusicGoDatabase : RoomDatabase() {
         }
 
         private val DEFAULT_PLAYLISTS = listOf(
-            PlayList(title = "Recommendations", description = "", createdByUser = false),
             PlayList(title = "Recent", description = "", createdByUser = false),
             PlayList(title = "Favorites", description = "", createdByUser = false)
         )

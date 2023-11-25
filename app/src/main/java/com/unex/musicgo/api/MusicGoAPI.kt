@@ -1,6 +1,8 @@
 package com.unex.musicgo.api
 
 import com.unex.musicgo.data.api.common.Items
+import com.unex.musicgo.data.api.recommendation.RecommendationsResponse
+import com.unex.musicgo.data.api.search.AvailableGenresResponse
 import com.unex.musicgo.data.api.search.SearchResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -47,6 +49,21 @@ interface MusicGoAPI {
         @Query("type") type: String = "track",
         @Query("limit") limit: Int = 20
     ): SearchResponse
+
+    @GET("recommendations")
+    suspend fun getRecommendations(
+        @Header("Authorization") auth: String,
+        @Query("limit") limit: Int,
+        @Query("market") market: String = "ES",
+        @Query("seed_tracks") seedTracks: String = "0c6xIDDpzE81m2q797ordA",
+        @Query("seed_artists") seedArtists: String = "4NHQUGzhtTLFvgF5SZesLK",
+        @Query("seed_genres") seedGenres: String = "classical%2Ccountry"
+    ): RecommendationsResponse
+
+    @GET("/v1/recommendations/available-genre-seeds")
+    suspend fun getAvailableGenres(
+        @Header("Authorization") auth: String
+    ): AvailableGenresResponse
 }
 
 class APIError(message: String, cause: Throwable?) : Throwable(message, cause)

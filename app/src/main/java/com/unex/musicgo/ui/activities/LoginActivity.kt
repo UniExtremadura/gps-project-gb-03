@@ -64,6 +64,14 @@ class LoginActivity : AppCompatActivity() {
         this.loginBtn.setOnClickListener {
             val emailText = this.username.text.toString()
             val passwordText = this.passwordTv.text.toString()
+            if (emailText.isEmpty() || passwordText.isEmpty()) {
+                Toast.makeText(
+                    baseContext,
+                    "Please fill all the fields",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return@setOnClickListener
+            }
             login(emailText, passwordText)
         }
         this.registerBtn.setOnClickListener {

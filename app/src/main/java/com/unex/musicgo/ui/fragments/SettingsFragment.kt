@@ -113,7 +113,7 @@ class SettingsFragment : Fragment() {
                             userCollection.document(document.id).delete()
 
                             // Delete user from the authentication
-                            user.delete()
+                            it.delete()
                                 .addOnCompleteListener { task ->
                                     if (task.isSuccessful) {
                                         Log.d(TAG, "User account deleted.")
@@ -125,6 +125,21 @@ class SettingsFragment : Fragment() {
                                             R.string.error_delete_account,
                                             Toast.LENGTH_SHORT
                                         ).show()
+                                        // Insert again the user in the database
+                                        val userMap = hashMapOf(
+                                            "username" to document.data["username"],
+                                            "userSurname" to document.data["userSurname"],
+                                            "email" to document.data["email"],
+                                            "password" to document.data["password"],
+                                        )
+                                        userCollection.add(userMap)
+                                            .addOnSuccessListener { documentReference ->
+                                                Log.d(
+                                                    TAG,
+                                                    "DocumentSnapshot added with ID: ${documentReference.id}"
+                                                )
+                                            }
+                                        return@addOnCompleteListener
                                     }
                                 }
                         } catch (e: Exception) {

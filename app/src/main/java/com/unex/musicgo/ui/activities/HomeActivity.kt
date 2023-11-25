@@ -23,6 +23,7 @@ import com.unex.musicgo.models.PlayListSongCrossRef
 import com.unex.musicgo.models.PlayListWithSongs
 import com.unex.musicgo.models.Song
 import com.unex.musicgo.ui.fragments.FavoritesFragment
+import com.unex.musicgo.ui.fragments.DiscoverFragment
 import com.unex.musicgo.ui.fragments.HomeFragment
 import com.unex.musicgo.ui.fragments.PlayListDetailsFragment
 import com.unex.musicgo.ui.fragments.PlayListFragment
@@ -39,7 +40,7 @@ import java.nio.charset.StandardCharsets
 
 class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener,
     ProfileStatisticsFragment.OnConsultStatisticsListener, OnCreatePlayListButtonClick,
-    PlayListFragment.OnPlaylistClickListener {
+    PlayListFragment.OnPlaylistClickListener, HomeFragment.OnDiscoverButtonClick {
 
     companion object {
         const val TAG = "HomeActivity"
@@ -280,6 +281,11 @@ class HomeActivity : AppCompatActivity(), OnSongClickListener, OnSearchListener,
 
     private fun launchFavoritesFragment() {
         val fragment = FavoritesFragment.newInstance()
+        replaceFragment(fragment)
+    }
+
+    override fun onDiscoverButtonClick() {
+        val fragment = DiscoverFragment.newInstance()
         replaceFragment(fragment)
     }
 
