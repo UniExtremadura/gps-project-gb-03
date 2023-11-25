@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Capa inferior: Fondo redondeado -->
+    <item android:drawable="@drawable/rounded_edittext_background" />
+
+    <!-- Capa superior: Icono -->
+    <item android:drawable="@drawable/ic_lens"
+        android:gravity="start"
+        android:height="32dp"
+        android:width="32dp"
+        android:left="10dp"
+        android:top="15dp"
+        />
+</layer-list>

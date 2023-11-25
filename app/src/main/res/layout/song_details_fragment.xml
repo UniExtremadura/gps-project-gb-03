@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+    app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Song icon -->
+        <ImageView
+            android:id="@+id/song_icon"
+            android:layout_width="232dp"
+            android:layout_height="232dp"
+            android:layout_marginTop="64dp"
+            android:backgroundTint="@android:color/transparent"
+            android:backgroundTintMode="src_over"
+            android:contentDescription="@string/cover_image"
+            android:src="@drawable/ic_song_disk"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:id="@+id/buttons_song"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/song_icon">
+
+            <!-- Play button -->
+            <ImageButton
+                android:id="@+id/play_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@string/play_description"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_play_song" />
+
+            <!-- Pause button -->
+            <ImageButton
+                android:id="@+id/pause_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:contentDescription="@string/pause_description"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_pause"
+                android:visibility="gone" />
+
+            <!-- Separator -->
+            <Space
+                android:layout_width="32dp"
+                android:layout_height="match_parent" />
+
+            <!-- Stop button -->
+            <ImageButton
+                android:id="@+id/stop_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@string/stop_description"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_stop_song" />
+
+        </LinearLayout>
+
+        <!-- Progress bar-->
+        <SeekBar
+            android:id="@+id/song_progress"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttons_song" />
+
+        <!-- Song info -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:paddingHorizontal="52dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttons_song">
+
+            <TextView
+                android:id="@+id/song_info_names"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Bajo el cielo estrellado, nuestros sueños se entrelazan en un vals eterno, susurrando promesas de amor y esperanza" />
+
+            <!-- Stars / Valoration -->
+            <LinearLayout
+                android:id="@+id/song_info_stars"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/song_info_names">
+
+                <ImageView
+                    android:id="@+id/star_1"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/stars_description"
+                    android:src="@drawable/ic_star" />
+
+                <ImageView
+                    android:id="@+id/star_2"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/stars_description"
+                    android:src="@drawable/ic_star" />
+
+                <ImageView
+                    android:id="@+id/star_3"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/stars_description"
+                    android:src="@drawable/ic_star" />
+
+                <ImageView
+                    android:id="@+id/star_4"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/stars_description"
+                    android:src="@drawable/ic_star" />
+
+                <ImageView
+                    android:id="@+id/star_5"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/stars_description"
+                    android:src="@drawable/ic_star" />
+
+            </LinearLayout>
+
+            <!-- Info block initial text -->
+            <TextView
+                android:id="@+id/song_info_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/information_song"
+                android:textColor="@color/blue"
+                android:textSize="24sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/song_info_stars" />
+
+            <!-- Artist -->
+            <LinearLayout
+                android:id="@+id/song_info_artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/song_info_title">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/name"
+                    android:src="@drawable/ic_profile" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/song_info_artist_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:textSize="22sp"
+                        tools:text="Lorenzo Mariposa" />
+
+                    <TextView
+                        android:id="@+id/song_info_artist_secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Artista"
+                        android:textColor="@color/gray"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider_1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/song_info_artist" />
+
+            <!-- Genre -->
+            <LinearLayout
+                android:id="@+id/song_info_genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_1">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/musical_note_description"
+                    android:src="@drawable/ic_music_note" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/song_info_genre_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:textSize="22sp"
+                        tools:text="Balada romántica mezclada con música clásica" />
+
+                    <TextView
+                        android:id="@+id/song_info_genre_secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/genre_msg"
+                        android:textAllCaps="false"
+                        android:textColor="@color/gray"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/song_info_genre" />
+
+            <!-- Comments -->
+            <LinearLayout
+                android:id="@+id/song_info_comments_block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/new_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@string/new_comment_title"
+                        android:textColor="@color/blue"
+                        android:textSize="24sp" />
+
+                    <EditText
+                        android:id="@+id/new_comment_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/new_comment_hint"
+                        android:textAllCaps="false"
+                        android:textColor="@color/gray"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Comments is a frame to add comments dynamically -->
+            <FrameLayout
+                android:id="@+id/song_info_comments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/song_info_comments_block" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

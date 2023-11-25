@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_navbar_item_size">32dp</dimen>
+    <dimen name="bottom_navbar_item_bg_width">52dp</dimen>
+    <dimen name="bottom_navbar_item_bg_height">52dp</dimen>
+    <dimen name="bottom_navbar_item_corners">12dp</dimen>
+</resources>

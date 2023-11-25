@@ -1,0 +1,234 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/custom_toolbar">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/icons_trash_share"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/trash_icon"
+                        android:contentDescription="@string/delete"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:src="@drawable/ic_empty_trash" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="2" />
+
+                    <ImageView
+                        android:id="@+id/share_icon"
+                        android:layout_width="0dp"
+                        android:contentDescription="@string/share_description"
+                        android:layout_height="50dp"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:src="@drawable/ic_share" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/playlist_next_prev"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="48dp"
+                    android:gravity="center"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/previous_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="16dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:contentDescription="@string/previous_playlist_description"
+                        android:src="@drawable/ic_previous" />
+
+                    <ImageView
+                        android:id="@+id/playlist_icon"
+                        android:layout_width="232dp"
+                        android:layout_height="232dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:contentDescription="@string/playlist_icon_description"
+                        android:src="@drawable/ic_playlist"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/next_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:contentDescription="@string/next_playlist_description"
+                        android:src="@drawable/ic_next"
+                        app:layout_constraintStart_toStartOf="@id/playlist_icon" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/name_playlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/playlist_next_prev">
+
+                    <TextView
+                        android:id="@+id/playlist_info_names"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:ellipsize="end"
+                        android:maxWidth="250dp"
+                        android:maxLines="2"
+                        android:text="@string/name"
+                        android:textAlignment="center"
+                        android:textColor="@color/blue"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/playlist_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:ellipsize="end"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:maxWidth="250dp"
+                        android:maxLines="2"
+                        android:textColor="@color/blue"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/brush_icon_playlist"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:contentDescription="@string/image_description"
+                        android:src="@drawable/ic_brush"
+                        app:layout_constraintStart_toStartOf="@id/playlist_icon" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/description_playlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/name_playlist">
+
+                    <TextView
+                        android:id="@+id/playlist_info_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:maxLines="4"
+                        android:text="@string/description_playlist"
+                        android:textColor="@color/gray"
+                        android:textSize="16sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/playlist_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:maxLines="4"
+                        android:textColor="@color/gray"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/brush_icon_description"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:backgroundTintMode="src_over"
+                        android:contentDescription="@string/description_playlist"
+                        android:src="@drawable/ic_brush"
+                        app:layout_constraintStart_toStartOf="@id/playlist_icon" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider_1"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:background="@color/gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/description_playlist" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_song_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
