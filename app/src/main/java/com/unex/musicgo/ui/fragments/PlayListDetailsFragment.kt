@@ -279,6 +279,7 @@ class PlayListDetailsFragment : Fragment(), SongListFragment.OnSongDeleteListene
             }
         }
     }
+
     private fun ListDisplayBinding.bindTrash() {
         // If the state is CREATE, hide the trash icon
         if (state == State.CREATE) {

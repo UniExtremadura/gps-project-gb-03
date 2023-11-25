@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:labelFor="@+id/username_tv"
-            android:text="@string/login_username_title" />
+            android:text="@string/signup_username_title" />
 
         <!-- Username input -->
         <EditText

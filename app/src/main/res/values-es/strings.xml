@@ -53,11 +53,17 @@
     <string name="previous_playlist_description">Lista anterior</string>
     <string name="next_playlist_description">Siguiente lista</string>
     <string name="save_on_playlist_menu">Guardar en lista</string>
-    <string name="dialog_delete_playlist_menu">¿Estás seguro de que quieres eliminar la playlist?</string>
     <string name="dialog_delete_song_from_list">¿Estás seguro que desea borrar la canción de la lista?</string>
+    <string name="dialog_delete_playlist_menu">¿Estás seguro de que quieres eliminar la playlist?</string>
     <string name="share_description">Compartir</string>
+    <string name="descubrir">Descubrir...</string>
+    <string name="discover">Descubrir</string>
+    <string name="artist_msg">ARTISTA</string>
+    <string name="discover_searchbar">Buscar artista</string>
+    <string name="filter_button">Aplicar</string>
     <string name="new_comment_title">Publica un nuevo comentario</string>
     <string name="new_comment_hint">Escribe un comentario</string>
     <string name="yourFavorites">Tus favoritos</string>
     <string name="stars_description">Icono de estrella</string>
+    <string name="signup_username_title">Nombre de usuario</string>
 </resources>

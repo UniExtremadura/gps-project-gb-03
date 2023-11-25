@@ -29,7 +29,14 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var onSongClickListener: OnSongClickListener
     private lateinit var onSearchListener: OnSearchListener
+    private lateinit var onDiscoverButtonClick: OnDiscoverButtonClick
+
     private var db: MusicGoDatabase? = null
+
+
+    interface OnDiscoverButtonClick {
+        fun onDiscoverButtonClick()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +67,13 @@ class HomeFragment : Fragment() {
         } else {
             throw RuntimeException("$context must implement OnSearchListener")
         }
+
+        // Check if the context implements OnDiscoverButtonClick
+        if (context is OnDiscoverButtonClick) {
+            onDiscoverButtonClick = context
+        } else {
+            throw RuntimeException("$context must implement OnDiscoverButtonClick")
+        }
     }
 
     override fun onCreateView(
@@ -85,6 +99,10 @@ class HomeFragment : Fragment() {
                     return true
                 }
             })
+
+            discoverButton.setOnClickListener {
+                onDiscoverButtonClick.onDiscoverButtonClick()
+            }
         }
         return binding.root
     }

@@ -42,7 +42,8 @@ class SongListFragment : Fragment() {
         RECENT,
         SEARCH,
         PLAYLIST,
-        FAVORITES
+        FAVORITES,
+        RECOMMENDATION
     }
 
     interface OnSongDeleteListener {
@@ -62,14 +63,19 @@ class SongListFragment : Fragment() {
 
     private var db: MusicGoDatabase? = null
 
+    private var genreSeed: String? = null
+    private var artistSeed: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate SongListFragment")
         arguments?.let {
-            _query = it.getString("query")
-            _option = it.getString("option")
-            stars = it.getInt("stars")
-            playList = arguments?.getSerializable("playList") as PlayListWithSongs?
+            _query = it.getString(QUERY_ARG)
+            _option = it.getString(OPTION_ARG)
+            stars = it.getInt(OPTION_STARS)
+            genreSeed = it.getString(GENRE_ARG)
+            artistSeed = it.getString(ARTIST_ARG)
+            playList = arguments?.getSerializable(PLAYLIST_ARG) as PlayListWithSongs?
         }
 
         lifecycleScope.launch {
@@ -116,6 +122,8 @@ class SongListFragment : Fragment() {
                         playList!!.songs
                     } else if (option == Option.FAVORITES.name) {
                         fetchFavoritesSongs()
+                    } else if (option == Option.RECOMMENDATION.name) {
+                        fetchRecommendations()
                     } else {
                         throw IllegalArgumentException("Option not found")
                     }
@@ -138,6 +146,37 @@ class SongListFragment : Fragment() {
         val isConnected: Boolean = activeNetwork != null
         Log.d(TAG, "isConnected: $isConnected")
         return isConnected
+    }
+
+    private suspend fun fetchRecommendations(): List<Song> {
+        if (genreSeed == null && artistSeed == null) {
+            throw Error("Genre seed and artist seed cannot be null")
+        }
+        Log.d(
+            TAG,
+            "Fetching recommendations from API with genre seed: $genreSeed and artist seed: $artistSeed"
+        )
+        var listOfSongs: List<Song>
+        // Get the songs from the network
+        val service = getNetworkService()
+        val authToken = getAuthToken()
+        val recommendations = if (artistSeed.isNullOrEmpty() && genreSeed.isNullOrEmpty()) {
+            service.getRecommendations(authToken, limit = 50)
+        } else {
+            service.getRecommendations(
+                authToken,
+                limit = 50,
+                seedTracks = "",
+                seedArtists = artistSeed ?: "",
+                seedGenres = genreSeed ?: ""
+            )
+        }
+        // Get the tracks from recommendations
+        val tracks = recommendations.tracks
+        // Mapped from Tracks API to Song
+        listOfSongs = tracks.map(Items::toSong)
+        listOfSongs = listOfSongs.filter { song -> song.previewUrl != null }
+        return listOfSongs
     }
 
     private suspend fun fetchRecentSongs(): List<Song> =
@@ -214,7 +253,7 @@ class SongListFragment : Fragment() {
             it.rvSongList.layoutManager = LinearLayoutManager(context)
             it.rvSongList.adapter = adapter
         }
-        Log.d("SongListFragment", "setUpRecyclerView")
+        Log.d(TAG, "setUpRecyclerView")
     }
 
     override fun onDestroyView() {
@@ -226,13 +265,20 @@ class SongListFragment : Fragment() {
 
     companion object {
 
+        private const val OPTION_ARG = "option"
+        private const val QUERY_ARG = "query"
+        private const val OPTION_STARS = "stars"
+        private const val PLAYLIST_ARG = "playList"
+        private const val GENRE_ARG = "genre"
+        private const val ARTIST_ARG = "artist"
+
         @JvmStatic
         fun newSearchInstance(query: String): SongListFragment {
             return SongListFragment()
                 .apply {
                     arguments = Bundle().apply {
-                        putString("option", Option.SEARCH.name)
-                        putString("query", query)
+                        putString(OPTION_ARG, Option.SEARCH.name)
+                        putString(QUERY_ARG, query)
                     }
                 }
         }
@@ -242,7 +288,7 @@ class SongListFragment : Fragment() {
             return SongListFragment()
                 .apply {
                     arguments = Bundle().apply {
-                        putString("option", Option.RECENT.name)
+                        putString(OPTION_ARG, Option.RECENT.name)
                     }
                 }
         }
@@ -252,8 +298,8 @@ class SongListFragment : Fragment() {
             return SongListFragment()
                 .apply {
                     arguments = Bundle().apply {
-                        putString("option", Option.PLAYLIST.name)
-                        putSerializable("playList", playList)
+                        putString(OPTION_ARG, Option.PLAYLIST.name)
+                        putSerializable(PLAYLIST_ARG, playList)
                     }
                 }
         }
@@ -263,8 +309,23 @@ class SongListFragment : Fragment() {
             return SongListFragment()
                 .apply {
                     arguments = Bundle().apply {
-                        putString("option", Option.FAVORITES.name)
-                        putInt("stars", stars ?: 0)
+                        putString(OPTION_ARG, Option.FAVORITES.name)
+                        putInt(OPTION_STARS, stars ?: 0)
+                    }
+                }
+        }
+
+        @JvmStatic
+        fun newRecommendationsInstance(
+            genreSeed: String? = null,
+            artistSeed: String? = null
+        ): SongListFragment {
+            return SongListFragment()
+                .apply {
+                    arguments = Bundle().apply {
+                        putString(OPTION_ARG, Option.RECOMMENDATION.name)
+                        putString(GENRE_ARG, genreSeed)
+                        putString(ARTIST_ARG, artistSeed)
                     }
                 }
         }
