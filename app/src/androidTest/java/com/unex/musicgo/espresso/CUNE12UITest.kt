@@ -21,6 +21,32 @@ import com.unex.musicgo.R
 class CUNE12UITest {
 
 
+    @get:Rule
+    val activityRule = ActivityScenarioRule(HomeActivity::class.java)
+
+    @Test
+    fun testSongPause() {
+        sleepThread(1)
+
+        onView(withId(R.id.searchView)).perform(click())
+        onView(isAssignableFrom(EditText::class.java))
+            .perform(typeText("mi gran noche"), pressImeActionButton())
+        sleepThread(3)
+
+        onView(allOf(withId(R.id.rv_song_list)))
+            .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        sleepThread(1)
+
+        onView(withId(R.id.play_button)).perform(click())
+        sleepThread(4)
+        onView(withId(R.id.pause_button)).perform(click())
+        sleepThread(1)
+        onView(withId(R.id.play_button)).perform(click())
+        sleepThread(2)
+
+    }
+
+
     private fun sleepThread(seconds: Int) {
         try {
             val milliseconds = seconds * 1000L
