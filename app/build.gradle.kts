@@ -122,6 +122,9 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoVersion")
     testImplementation("org.mockito:mockito-inline:$mockitoVersion")
 
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
+    // Gson
+    implementation("com.google.code.gson:gson:2.8.8")
     // QR
     implementation("com.google.zxing:core:3.4.1")
 
