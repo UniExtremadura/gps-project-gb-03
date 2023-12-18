@@ -1,5 +1,6 @@
 package com.unex.musicgo.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import com.unex.musicgo.models.UserStatistics
@@ -22,7 +23,7 @@ interface StatisticsDao {
      * @return the songId of the most played song.
      */
     @Query("SELECT * FROM statistics_song ORDER BY plays DESC LIMIT 1")
-    suspend fun getMostPlayedSong(): UserStatistics
+    fun getMostPlayedSong(): LiveData<UserStatistics>
 
     /**
      * Get the biggest statistic of plays. This is used to get the most played song.
@@ -30,20 +31,20 @@ interface StatisticsDao {
      * @return statistics of the most played song.
      */
     @Query("SELECT * FROM statistics_song ORDER BY plays DESC LIMIT :limit")
-    suspend fun getAllMostPlayedSong(limit: Int): List<UserStatistics>
+    fun getAllMostPlayedSong(limit: Int): LiveData<List<UserStatistics>>
 
     /**
      * Get the biggest artist of plays. This is used to get the most played artist.
      * @return the artistId of the most played artist.
      */
     @Query("SELECT * FROM statistics_song ORDER BY plays DESC LIMIT 1")
-    suspend fun getMostPlayedArtist(): UserStatistics
+    fun getMostPlayedArtist(): LiveData<UserStatistics>
 
     /**
      * Get the total time played of the user. This is used to get the total time played.
      * @return the total time played.
      */
     @Query("SELECT SUM(timePlayed) FROM statistics_song")
-    suspend fun getTotalTimePlayed(): Long
+    fun getTotalTimePlayed(): LiveData<Long>
 
 }

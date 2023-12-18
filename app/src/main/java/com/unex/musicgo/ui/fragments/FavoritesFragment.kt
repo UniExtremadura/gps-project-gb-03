@@ -8,13 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.unex.musicgo.R
-import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.FavoritesFragmentBinding
 import com.unex.musicgo.ui.interfaces.OnSongClickListener
-import kotlinx.coroutines.launch
+import com.unex.musicgo.ui.vms.FavoritesFragmentViewModel
 
 class FavoritesFragment : Fragment() {
 
@@ -26,17 +25,9 @@ class FavoritesFragment : Fragment() {
     private var _binding: FavoritesFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var listener: OnSongClickListener
-    private var db: MusicGoDatabase? = null
 
-    private var starsFilter: Int = 0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate favoritesFragment")
-
-        lifecycleScope.launch {
-            db = MusicGoDatabase.getInstance(requireContext())
-        }
+    private val viewModel: FavoritesFragmentViewModel by lazy {
+        ViewModelProvider(this)[FavoritesFragmentViewModel::class.java]
     }
 
     override fun onAttach(context: Context) {
@@ -73,60 +64,59 @@ class FavoritesFragment : Fragment() {
     ): View {
         Log.d(TAG, "onCreateView favoritesFragment")
         _binding = FavoritesFragmentBinding.inflate(inflater, container, false)
-        with(binding) {
-            this.btn5.starsText.text = "5"
-            this.btn4.starsText.text = "4"
-            this.btn5.starsBtn.setOnClickListener {
-                if (starsFilter == 5) {
-                    setColorBlue(btn4.starsBtnContainer)
-                    setColorBlue(btn5.starsBtnContainer)
-                    starsFilter = 0
-                } else {
-                    setColorBlue(btn4.starsBtnContainer)
-                    setColorGreen(btn5.starsBtnContainer)
-                    starsFilter = 5
-                }
-                filterByStars(starsFilter)
-            }
-            this.btn4.starsBtn.setOnClickListener {
-                if (starsFilter == 4) {
-                    setColorBlue(btn5.starsBtnContainer)
-                    setColorBlue(btn4.starsBtnContainer)
-                    starsFilter = 0
-                } else {
-                    setColorBlue(btn5.starsBtnContainer)
-                    setColorGreen(btn4.starsBtnContainer)
-                    starsFilter = 4
-                }
-                filterByStars(starsFilter)
-            }
-            val songListFragment = SongListFragment.newFavoritesInstance()
-            val transaction = childFragmentManager.beginTransaction()
-            transaction.replace(this.fragmentSongListContainer.id, songListFragment)
-            transaction.commit()
+        binding.btn5.starsText.text = "5"
+        binding.btn4.starsText.text = "4"
+        binding.btn5.starsBtn.setOnClickListener {
+            viewModel.updateStars(5)
         }
+        binding.btn4.starsBtn.setOnClickListener {
+            viewModel.updateStars(4)
+        }
+        launchFavoritesSongFragment()
         return binding.root
     }
 
-    private fun filterByStars(stars: Int) {
-        Log.d(TAG, "filterByStars favoritesFragment")
+    private fun launchFavoritesSongFragment(stars: Int? = null) {
         val songListFragment = SongListFragment.newFavoritesInstance(stars)
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(binding.fragmentSongListContainer.id, songListFragment)
         transaction.commit()
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setUpViewModel()
+    }
+
+    private fun setUpViewModel() {
+        viewModel.stars.observe(viewLifecycleOwner) {
+            when (it) {
+                0 -> {
+                    setColorBlue(binding.btn4.starsBtnContainer)
+                    setColorBlue(binding.btn5.starsBtnContainer)
+                    launchFavoritesSongFragment()
+                }
+                4 -> {
+                    setColorBlue(binding.btn5.starsBtnContainer)
+                    setColorGreen(binding.btn4.starsBtnContainer)
+                    launchFavoritesSongFragment(4)
+                }
+                5 -> {
+                    setColorBlue(binding.btn4.starsBtnContainer)
+                    setColorGreen(binding.btn5.starsBtnContainer)
+                    launchFavoritesSongFragment(5)
+                }
+            }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         // Set the bottom navigation item as selected
-        with(binding) {
-            val bottomNavigation =
-                activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            bottomNavigation?.let {
-                it.menu.getItem(2).isCheckable = true
-                it.menu.getItem(2).isChecked = true
-            }
-        }
+        val bottomNavigation = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigation.menu.getItem(2).isCheckable = true
+        bottomNavigation.menu.getItem(2).isChecked = true
     }
 
     override fun onDestroyView() {

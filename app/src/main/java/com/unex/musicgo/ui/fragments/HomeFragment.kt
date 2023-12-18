@@ -8,14 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.unex.musicgo.R
-import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.HomeFragmentBinding
 import com.unex.musicgo.ui.interfaces.OnSearchListener
 import com.unex.musicgo.ui.interfaces.OnSongClickListener
-import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -31,23 +28,8 @@ class HomeFragment : Fragment() {
     private lateinit var onSearchListener: OnSearchListener
     private lateinit var onDiscoverButtonClick: OnDiscoverButtonClick
 
-    private var db: MusicGoDatabase? = null
-
-
     interface OnDiscoverButtonClick {
         fun onDiscoverButtonClick()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate SongListFragment")
-        arguments?.let {
-
-        }
-
-        lifecycleScope.launch {
-            db = MusicGoDatabase.getInstance(requireContext())
-        }
     }
 
     override fun onAttach(context: Context) {
@@ -82,6 +64,11 @@ class HomeFragment : Fragment() {
     ): View {
         Log.d(TAG, "onCreateView SongListFragment")
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         with(binding) {
             // Always create a new SongListFragment
             val songListFragment = SongListFragment.newRecentsInstance()
@@ -104,19 +91,14 @@ class HomeFragment : Fragment() {
                 onDiscoverButtonClick.onDiscoverButtonClick()
             }
         }
-        return binding.root
     }
 
     override fun onStart() {
         super.onStart()
         // Set the bottom navigation item as selected
-        with(binding) {
-            val bottomNavigation = activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            bottomNavigation?.let {
-                it.menu.getItem(0).isCheckable = true
-                it.menu.getItem(0).isChecked = true
-            }
-        }
+        val bottomNavigation = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigation.menu.getItem(0).isCheckable = true
+        bottomNavigation.menu.getItem(0).isChecked = true
     }
 
     override fun onDestroyView() {

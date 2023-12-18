@@ -1,5 +1,6 @@
 package com.unex.musicgo.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -22,7 +23,7 @@ interface UserDao {
      * @return the user with the given username.
      */
     @Query("SELECT * FROM user WHERE email = :email")
-    suspend fun getUserByEmail(email: String): User
+    fun getUserByEmail(email: String): LiveData<User>
 
     /**
      * Delete all the users from the database.

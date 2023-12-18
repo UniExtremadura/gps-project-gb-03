@@ -8,37 +8,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.unex.musicgo.models.Song
-import kotlinx.coroutines.launch
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.unex.musicgo.api.getAuthToken
-import com.unex.musicgo.api.getNetworkService
-import com.unex.musicgo.data.toSong
-import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.SongListFragmentBinding
 import com.unex.musicgo.ui.adapters.SongListFavoritesAdapter
 import com.unex.musicgo.ui.interfaces.OnSongClickListener
+import com.unex.musicgo.ui.vms.SongListFavoritesFragmentViewModel
 
 class SongListFavoritesFragment : Fragment() {
-
-    private val TAG = "SongListFavoritesFragment"
-    private var _songs: List<Song> = emptyList()
 
     private lateinit var listener: OnSongClickListener
 
     private var binding: SongListFragmentBinding? = null
     private lateinit var adapter: SongListFavoritesAdapter
 
-    private var db: MusicGoDatabase? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate SongListFavoritesFragment")
-
-        lifecycleScope.launch {
-            db = MusicGoDatabase.getInstance(requireContext())
-        }
+    private val viewModel: SongListFavoritesFragmentViewModel by lazy {
+        ViewModelProvider(
+            this,
+            SongListFavoritesFragmentViewModel.Factory
+        )[(SongListFavoritesFragmentViewModel::class.java)]
     }
 
     override fun onAttach(context: Context) {
@@ -62,30 +50,37 @@ class SongListFavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpViewModel()
         setUpRecyclerView()
-        lifecycleScope.launch {
-            binding?.let {
-                it.spinner.visibility = View.VISIBLE
-                try {
-                    _songs = fetchSongs()
-                    adapter.updateData(_songs)
-                } catch (error: Error) {
-                    context?.let {
-                        Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
-                    }
-                } finally {
-                    it.spinner.visibility = View.GONE
-                }
+
+        viewModel.load(requireContext()) {
+            viewModel.fetchMostPlayedSongs()
+        }
+    }
+
+    private fun setUpViewModel() {
+        viewModel.toastLiveData.observe(viewLifecycleOwner) {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            binding?.spinner?.visibility = if (it) View.VISIBLE else View.GONE
+        }
+        viewModel.listMostPlayedStatistics.observe(viewLifecycleOwner) {
+            viewModel.load(requireContext()) {
+                viewModel.fetchSongs()
             }
+        }
+        viewModel.songs.observe(viewLifecycleOwner) {
+            adapter.updateData(it)
         }
     }
 
     private fun setUpRecyclerView() {
         binding?.let {
             adapter = SongListFavoritesAdapter(
-                songs = _songs,
-                onClick = {
-                    listener.onSongClick(it)
+                songs = emptyList(),
+                onClick = { song ->
+                    listener.onSongClick(song)
                 },
                 onOptionsClick = { song, view ->
                     listener.onOptionsClick(song, view)
@@ -98,38 +93,14 @@ class SongListFavoritesFragment : Fragment() {
         Log.d(TAG, "setUpRecyclerView")
     }
 
-    private suspend fun fetchSongs(): List<Song> {
-        val songs = mutableListOf<Song>()
-        // Get the songs most played
-        val listMostPlayedStatistics = db?.statisticsDao()?.getAllMostPlayedSong(3)
-        // Get the songs from database or network
-        val service = getNetworkService()
-        var token: String? = null
-        listMostPlayedStatistics?.let {
-            it.forEach {
-                val songOnDB = db?.songsDao()?.getSongById(it.songId)
-                if (songOnDB != null) {
-                    songs.add(songOnDB)
-                } else {
-                    if (token == null) token = getAuthToken()
-                    val songOnNetwork = service.getTrack(token!!, it.songId)
-                    val song = songOnNetwork.toSong()
-                    songs.add(song)
-                    db?.songsDao()?.insert(song)
-                }
-            }
-        }
-        return songs
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null // avoid memory leaks
     }
 
-    class Error(message: String, cause: Throwable?) : Throwable(message, cause)
-
     companion object {
+
+        const val TAG = "SongListFavoritesFragment"
 
         @JvmStatic
         fun newInstance() = SongListFavoritesFragment()

@@ -6,17 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.unex.musicgo.R
-import com.unex.musicgo.database.MusicGoDatabase
 import com.unex.musicgo.databinding.ProfileBinding
-import kotlinx.coroutines.launch
+import com.unex.musicgo.ui.vms.ProfileStatisticsFragmentViewModel
 
 class ProfileStatisticsFragment : Fragment() {
 
@@ -30,22 +26,16 @@ class ProfileStatisticsFragment : Fragment() {
         fun onConsultStatistics()
     }
 
-    private lateinit var listener: OnConsultStatisticsListener
     private var _binding: ProfileBinding? = null
     private val binding get() = _binding!!
 
-    private var db: MusicGoDatabase? = null
-    private lateinit var firestore: FirebaseFirestore
+    private lateinit var listener: OnConsultStatisticsListener
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate ProfileStatisticsFragment")
-
-        firestore = Firebase.firestore
-
-        lifecycleScope.launch {
-            db = MusicGoDatabase.getInstance(requireContext())
-        }
+    private val viewModel: ProfileStatisticsFragmentViewModel by lazy {
+        ViewModelProvider(
+            this,
+            ProfileStatisticsFragmentViewModel.Factory
+        )[ProfileStatisticsFragmentViewModel::class.java]
     }
 
     override fun onAttach(context: Context) {
@@ -64,43 +54,50 @@ class ProfileStatisticsFragment : Fragment() {
     ): View {
         Log.d(TAG, "onCreateView ProfileStatisticsFragment")
         _binding = ProfileBinding.inflate(inflater, container, false)
-        with(binding) {
-            bind()
-        }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setUpViewModel()
+        setUpViews()
+    }
+
+    private fun setUpViewModel() {
+        viewModel.toastLiveData.observe(viewLifecycleOwner) {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+        viewModel.user.observe(viewLifecycleOwner) {
+            binding.tittleFavs.text = it?.username
+        }
+    }
+
+    private fun setUpViews() {
+        binding.tittleFavs.text = "Unknown"
+
+        /** Set the listener for the check statistics button */
+        binding.checkStatisticsBtn.setOnClickListener {
+            listener.onConsultStatistics()
+        }
+
+        /** Add the top favorites songs */
+        val fragment = SongListFavoritesFragment.newInstance()
+        val transaction = childFragmentManager.beginTransaction()
+        transaction.replace(binding.frameLayout.id, fragment)
+        transaction.commit()
     }
 
     override fun onStart() {
         super.onStart()
+        Log.d(TAG, "onStart ProfileStatisticsFragment")
         // Set the bottom navigation item as selected
-        with(binding) {
-            val bottomNavigation =
-                activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            bottomNavigation?.let {
-                it.menu.getItem(3).isCheckable = true
-                it.menu.getItem(3).isChecked = true
-            }
+        val bottomNavigation =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigation?.let {
+            it.menu.getItem(3).isCheckable = true
+            it.menu.getItem(3).isChecked = true
         }
-    }
-
-    private fun ProfileBinding.bind() {
-        val user = Firebase.auth.currentUser
-        user?.let {
-            lifecycleScope.launch {
-                val email = user.email
-                Log.d(TAG, "email: $email")
-                val dbUser = db?.userDao()?.getUserByEmail(it.email!!)
-                binding.tittleFavs.text = dbUser?.username ?: "Unknown"
-            }
-        }
-        binding.checkStatisticsBtn.setOnClickListener {
-            listener.onConsultStatistics()
-        }
-        // Add the top favorites songs
-        val fragment = SongListFavoritesFragment.newInstance()
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.replace(this.frameLayout.id, fragment)
-        transaction.commit()
     }
 
     override fun onDestroyView() {

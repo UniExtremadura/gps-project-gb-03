@@ -1,5 +1,6 @@
 package com.unex.musicgo.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -56,7 +57,7 @@ interface PlayListDao {
      * Get all PlayLists created by the user without the songs from the database.
      */
     @Query("SELECT * FROM playlists WHERE createdByUser = 1")
-    suspend fun getPlayListsCreatedByUserWithoutSongs(): List<PlayList>
+    fun getPlayListsCreatedByUserWithoutSongs(): LiveData<List<PlayList>>
 
     /**
      * Get the Recent PlayList from the database.
@@ -64,7 +65,7 @@ interface PlayListDao {
      */
     @Transaction
     @Query("SELECT * FROM playlists WHERE title = 'Recent' AND createdByUser = 0")
-    suspend fun getRecentPlayList(): PlayListWithSongs
+    fun getRecentPlayList(): LiveData<PlayListWithSongs>
 
     /**
      * Get the Favorites PlayList from the database.
@@ -72,7 +73,7 @@ interface PlayListDao {
      */
     @Transaction
     @Query("SELECT * FROM playlists WHERE title = 'Favorites' AND createdByUser = 0")
-    suspend fun getFavoritesPlayList(): PlayListWithSongs
+    fun getFavoritesPlayList(): LiveData<PlayListWithSongs>
 
     /**
      * Get the Recommendations PlayList from the database.
@@ -80,7 +81,7 @@ interface PlayListDao {
      */
     @Transaction
     @Query("SELECT * FROM playlists WHERE title = 'Recommendations' AND createdByUser = 0")
-    suspend fun getRecommendationsPlayList(): PlayListWithSongs
+    fun getRecommendationsPlayList(): LiveData<PlayListWithSongs>
 
     /**
      * Get a PlayList from the database.
@@ -89,7 +90,7 @@ interface PlayListDao {
      */
     @Transaction
     @Query("SELECT * FROM playlists WHERE title = :title AND description = :description")
-    suspend fun getPlayList(title: String, description: String): PlayListWithSongs
+    fun getPlayList(title: String, description: String): LiveData<PlayListWithSongs>
 
     /**
      * Get a PlayList from the database.
@@ -97,7 +98,7 @@ interface PlayListDao {
      */
     @Transaction
     @Query("SELECT * FROM playlists WHERE id = :playlistId")
-    suspend fun getPlayList(playlistId: Int): PlayListWithSongs
+    fun getPlayList(playlistId: Int): LiveData<PlayListWithSongs>
 
     /**
      * Get the number of playlists in the database.

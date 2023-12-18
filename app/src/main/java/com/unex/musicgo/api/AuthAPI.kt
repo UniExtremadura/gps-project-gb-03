@@ -34,6 +34,8 @@ private val service: AuthAPI by lazy {
     retrofit.create(AuthAPI::class.java)
 }
 
+fun getAuthService() = service
+
 suspend fun getAuthToken(): String {
     val response = service.getToken(auth, "client_credentials")
     return "Bearer ${response.accessToken}"

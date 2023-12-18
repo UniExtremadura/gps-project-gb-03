@@ -1,10 +1,10 @@
 package com.unex.musicgo.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.unex.musicgo.models.PlayList
 import com.unex.musicgo.models.Song
 
 @Dao
@@ -42,14 +42,14 @@ interface SongsDao {
      * Get a song by its id.
      */
     @Query("SELECT * FROM songs WHERE id = :songId")
-    suspend fun getSongById(songId: String): Song?
+    fun getSongById(songId: String): LiveData<Song?>
 
     /**
      * Get a list of songs by the query.
      * @param query the query to search
      */
     @Query("SELECT * FROM songs WHERE title LIKE '%' || :query || '%' OR artist LIKE '%' || :query || '%'")
-    suspend fun searchByQuery(query: String): List<Song>
+    fun searchByQuery(query: String): LiveData<List<Song>>
 
     /**
      * Clear the cache of the songs.
