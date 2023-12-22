@@ -1,7 +1,6 @@
-package com.unex.musicgo
+package com.unex.musicgo.espresso
 
 import android.view.View
-import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
@@ -15,6 +14,7 @@ import org.hamcrest.TypeSafeMatcher
 import org.hamcrest.core.AllOf.allOf
 import org.junit.Rule
 import org.junit.Test
+import com.unex.musicgo.R
 
 class CUNE11UITest {
 
@@ -23,25 +23,22 @@ class CUNE11UITest {
 
     @Test
     fun testFilteredSong (){
-
         Espresso.onView(ViewMatchers.withId(R.id.discoverButton)).perform(ViewActions.click())
-
         // Interaction with searchBar and ApplyFilter button
-        Espresso.onView(ViewMatchers.withId(R.id.searchBar)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.isAssignableFrom(EditText::class.java)).perform(ViewActions.typeText("shakira"), ViewActions.pressImeActionButton())
         sleepThread(1)
 
-        sleepThread(3)
+        Espresso.onView(ViewMatchers.withId(R.id.searchBar)).perform(ViewActions.click())
+        sleepThread(1)
+        Espresso.onView(ViewMatchers.withId(R.id.searchBar)).perform(ViewActions.typeText("shakira"), ViewActions.pressImeActionButton())
 
+        sleepThread(3)
         // Hacer clic en un elemento en una posición específica dentro del RecyclerView
         Espresso.onView(allOf(ViewMatchers.withId(R.id.rv_song_list), withHeight(1831)))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, ViewActions.click()))
 		
 		Espresso.onView(ViewMatchers.withId(R.id.btn_apply_filters)).perform(ViewActions.click())
-
-
-
     }
+
     private fun sleepThread(seconds: Int) {
         try {
             val milliseconds = seconds * 1000L

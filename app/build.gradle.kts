@@ -112,19 +112,18 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // Espresso
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.4.0"){
+        exclude(module = "protobuf-lite")
+    }
 
     // Mockito
     testImplementation("org.mockito:mockito-core:$mockitoVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoVersion")
     testImplementation("org.mockito:mockito-inline:$mockitoVersion")
 
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
-    // Gson
-    implementation("com.google.code.gson:gson:2.8.8")
     // QR
     implementation("com.google.zxing:core:3.4.1")
 

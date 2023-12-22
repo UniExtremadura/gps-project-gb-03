@@ -1,4 +1,4 @@
-package com.unex.musicgo
+package com.unex.musicgo.espresso
 
 import android.view.View
 import androidx.test.espresso.UiController
