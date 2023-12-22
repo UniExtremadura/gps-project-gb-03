@@ -12,7 +12,7 @@ import com.unex.musicgo.ui.activities.SignupActivity
 import org.junit.Rule
 import org.junit.Test
 import com.unex.musicgo.R
-
+import org.junit.Before
 
 
 class CUNE2UItest {
@@ -20,9 +20,8 @@ class CUNE2UItest {
     @get:Rule
     val activityRule = ActivityScenarioRule(SignupActivity::class.java)
 
-    @Test
-    fun deleteAccount (){
-
+    @Before
+    fun createAccount() {
         Espresso.onView(ViewMatchers.withId(R.id.username))
             .perform(ViewActions.typeText("dummy_name1"), ViewActions.closeSoftKeyboard())
 
@@ -35,8 +34,11 @@ class CUNE2UItest {
         Espresso.onView(ViewMatchers.withId(R.id.userpassword))
             .perform(ViewActions.typeText("dummy_pass1"), ViewActions.closeSoftKeyboard())
 
+        Espresso.onView(ViewMatchers.withId(R.id.login_btn)).perform(ViewActions.scrollTo(), ViewActions.click())
+    }
 
-        Espresso.onView(ViewMatchers.withId(R.id.login_btn)).perform(ViewActions.click())
+    @Test
+    fun deleteAccount (){
         sleepThread(1)
 
         Espresso.onView(ViewMatchers.withId(R.id.settings_icon)).perform(ViewActions.click())

@@ -8,7 +8,6 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.unex.musicgo.ClickViewWithId
 import com.unex.musicgo.ui.activities.HomeActivity
 import org.hamcrest.core.AllOf
 import org.junit.Rule
@@ -20,7 +19,6 @@ class CUNE7UITest {
     val activityRule = ActivityScenarioRule(HomeActivity::class.java)
 
     @Test
-
     fun testDeleteSongFromPlaylist(){
         testAddSongToPlaylist()
 
