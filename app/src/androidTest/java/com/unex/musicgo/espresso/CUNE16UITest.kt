@@ -8,15 +8,34 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.unex.musicgo.R
-import com.unex.musicgo.ui.activities.HomeActivity
+import com.unex.musicgo.ui.activities.LoginActivity
 import org.hamcrest.core.AllOf
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class CUNE16UITest {
 
     @get:Rule
-    val activityRule = ActivityScenarioRule(HomeActivity::class.java)
+    val activityRule = ActivityScenarioRule(LoginActivity::class.java)
+
+    @Before
+    fun login() {
+        sleepThread(1)
+        // Valid Credentials
+        Espresso.onView(ViewMatchers.withId(R.id.username)).perform(
+            ViewActions.clearText(),
+            ViewActions.typeText("music@go.com"),
+            ViewActions.closeSoftKeyboard()
+        )
+        Espresso.onView(ViewMatchers.withId(R.id.password_tv)).perform(
+            ViewActions.clearText(),
+            ViewActions.typeText("123456"),
+            ViewActions.closeSoftKeyboard()
+        )
+        Espresso.onView(ViewMatchers.withId(R.id.login_btn)).perform(ViewActions.click())
+        sleepThread(2)
+    }
 
     @Test
     fun testGenerateStatistics() {

@@ -52,15 +52,6 @@ class CUE1UITest {
 
     }
 
-    /*
-    1 use case is going to be tested:
-    CUE-1:  User Creation
-
-    ERROR IMPORTANTE: En teoría los datos introducidos en testRegistrationRight() son correctos
-                      Y se supone que no debería afectar a la BD, pero lo hace, por eso ese test
-                      sale mal. No se por qué
-    */
-
     @Test
     fun testRegistrationEmptyName() {
 

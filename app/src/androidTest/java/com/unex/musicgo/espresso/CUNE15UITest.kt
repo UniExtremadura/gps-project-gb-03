@@ -18,7 +18,7 @@ class CUNE15UITest {
     val activityRule = ActivityScenarioRule(HomeActivity::class.java)
 
     @Before
-    private fun testCreatePlaylist() {
+    fun testCreatePlaylist() {
 
         Espresso.onView(ViewMatchers.withId(R.id.top_list)).perform(ViewActions.click())
 
@@ -43,8 +43,6 @@ class CUNE15UITest {
     }
     @Test
     fun testSharePlaylist() {
-        testCreatePlaylist()
-
         Espresso.onView(AllOf.allOf(ViewMatchers.withId(R.id.recycler_view)))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
@@ -53,7 +51,6 @@ class CUNE15UITest {
                 )
             )
         sleepThread(1)
-
         Espresso.onView(ViewMatchers.withId(R.id.share_icon)).perform(ViewActions.click())
         sleepThread(3)
     }
